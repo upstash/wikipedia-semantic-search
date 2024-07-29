@@ -60,7 +60,7 @@ const SelectContent = ({
 }) => (
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
-      className="overflow-hidden bg-white rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]"
+      className="overflow-hidden bg-white rounded-md shadow-xl"
       {...props}
     >
       <SelectPrimitive.ScrollUpButton className="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
@@ -68,7 +68,7 @@ const SelectContent = ({
       </SelectPrimitive.ScrollUpButton>
       {/**/}
 
-      <SelectPrimitive.Viewport className="p-[5px]">
+      <SelectPrimitive.Viewport className="p-2">
         {children}
       </SelectPrimitive.Viewport>
 
@@ -90,15 +90,17 @@ const SelectItem = ({
   return (
     <SelectPrimitive.Item
       className={cn(
-        "text-[13px] leading-none flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none",
+        "leading-none flex items-center h-[25px] pr-6 pl-4 relative select-none",
         "data-[disabled]:opacity-50 data-[disabled]:pointer-events-none data-[highlighted]:outline-none",
-        "data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1",
+        "data-[highlighted]:bg-emerald-100",
+        "data-[state=checked]:bg-emerald-200",
         className,
       )}
       {...props}
     >
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-      <SelectPrimitive.ItemIndicator className="absolute left-0 w-[25px] inline-flex items-center justify-center">
+
+      <SelectPrimitive.ItemIndicator className="ml-2">
         <CheckIcon />
       </SelectPrimitive.ItemIndicator>
     </SelectPrimitive.Item>
