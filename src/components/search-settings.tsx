@@ -2,11 +2,17 @@ import React from "react";
 import type { PopoverProps } from "@radix-ui/react-popover";
 import * as Popover from "@radix-ui/react-popover";
 import { Cross2Icon, MixerHorizontalIcon } from "@radix-ui/react-icons";
-import ToggleGroupDemo from "@/components/toggle-group";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/primitive/toggle-group";
+import { SearchOptions } from "@/lib/types";
 
 const SearchSettings = ({
   onValueChangeTopK,
+  options,
 }: PopoverProps & {
+  options: SearchOptions;
   onValueChangeTopK: (value: string) => void;
 }) => (
   <Popover.Root>
@@ -33,7 +39,16 @@ const SearchSettings = ({
             <label className="grow" htmlFor="topK">
               TopK
             </label>
-            <ToggleGroupDemo type="single" onValueChange={onValueChangeTopK} />
+
+            <ToggleGroup
+              value={options.topK.toString()}
+              type="single"
+              onValueChange={onValueChangeTopK}
+            >
+              <ToggleGroupItem value="5">5</ToggleGroupItem>
+              <ToggleGroupItem value="10">10</ToggleGroupItem>
+              <ToggleGroupItem value="20">20</ToggleGroupItem>
+            </ToggleGroup>
 
             {/*<input
               id="topK"

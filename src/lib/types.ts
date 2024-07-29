@@ -21,6 +21,7 @@ export enum ResultCode {
 export interface Result {
   code: ResultCode;
   data: Wiki[];
+  ms?: number;
 }
 
 interface NamespaceData {
@@ -38,3 +39,7 @@ export interface Info {
     [key: string]: NamespaceData;
   };
 }
+
+export type SearchOptions = {
+  topK: 5 | 10 | 20;
+};

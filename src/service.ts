@@ -3,10 +3,11 @@
 import { cookies } from "next/headers";
 
 export type Locale = (typeof locales)[number];
+
 const locales = [
+  "de",
   "en",
   "es",
-  "de",
   "fa",
   "fr",
   "it",
@@ -16,6 +17,7 @@ const locales = [
   "tr",
   "zh",
 ] as const;
+
 const defaultLocale: Locale = "en";
 
 const COOKIE_NAME = "NEXT_LOCALE";

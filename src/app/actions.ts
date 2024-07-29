@@ -3,7 +3,7 @@
 import { Index } from "@upstash/vector";
 import { z } from "zod";
 import { Info, Result, ResultCode, WikiMetadata } from "@/lib/types";
-import prettyMilliseconds from "pretty-ms";
+import { getUserLocale } from "@/service";
 
 const index = new Index<WikiMetadata>({
   url: process.env.UPSTASH_VECTOR_REST_URL,
@@ -15,6 +15,8 @@ export async function searchMovies(
   formData: FormData,
 ): Promise<Result | undefined> {
   try {
+    const namespace = await getUserLocale();
+
     const query = formData.get("query");
     const topK = Number(formData.get("topK"));
 
@@ -40,32 +42,23 @@ export async function searchMovies(
       };
     }
 
+    const q = {
+      data: query as string,
+      topK: topK as number,
+      includeData: true,
+      includeVectors: false,
+      includeMetadata: true,
+    };
+
     const t0 = performance.now();
-
-    const res = await index.info();
-    console.log(res);
-
-    const data = await index.query<WikiMetadata>(
-      {
-        data: query as string,
-        topK: topK as number,
-        includeData: true,
-        includeVectors: false,
-        includeMetadata: true,
-      },
-      {
-        namespace: "tr",
-      },
-    );
-
+    const data = await index.query<WikiMetadata>(q, { namespace });
     const t1 = performance.now();
-    const ms = prettyMilliseconds(t1 - t0);
-
-    console.log(ms);
+    const ms = t1 - t0;
 
     return {
       code: ResultCode.Success,
       data,
+      ms,
     };
   } catch (error) {
     console.error("Error querying Upstash:", error);
