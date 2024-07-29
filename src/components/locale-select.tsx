@@ -14,9 +14,9 @@ import {
 } from "@/components/primitive/select";
 
 export default function LocaleSelect({
-  info = {},
+  namespaces = {},
 }: {
-  info: Info["namespaces"];
+  namespaces: Info["namespaces"];
 }) {
   const [_, startTransition] = useTransition();
   const locale = useLocale();
@@ -35,8 +35,8 @@ export default function LocaleSelect({
         <SelectValue placeholder="Select a locale" />
       </SelectTrigger>
       <SelectContent>
-        {Object.keys(info)
-          .filter((key) => info[key].vectorCount > 0)
+        {Object.keys(namespaces)
+          .filter((key) => namespaces[key].vectorCount > 0)
           .map((key) => (
             <SelectItem key={key} value={key}>
               {key.toLocaleUpperCase(locale)}

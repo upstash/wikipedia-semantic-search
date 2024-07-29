@@ -25,7 +25,7 @@ export default function Page() {
   const [state, formAction] = useFormState(searchMovies, initialState);
   const [search, setSearch] = useState<string>("");
   const [options, setOptions] = React.useState<options>({
-    topK: 5,
+    topK: 10,
   });
 
   const updateViews = async () => {

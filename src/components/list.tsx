@@ -66,6 +66,7 @@ export default function List({
 
       {state.data.map((movie) => (
         <article key={movie.metadata?.id} className="border-b pb-4 mb-4">
+          <div>{movie.metadata?.id}</div>
           <h3 className="font-serif font-semibold text-xl">
             <a
               href={movie.metadata?.url}
@@ -76,7 +77,7 @@ export default function List({
             </a>
           </h3>
 
-          <p className="ml-2 line-clamp-2 opacity-60">{movie.data}</p>
+          <p className="ml-2 line-clamp-3 opacity-60">{movie.data}</p>
 
           {/*<footer className="mt-4 opacity-60 flex flex-wrap gap-2 *:px-2 *:border *:rounded *:border-zinc-200">
             <span className="">{movie.score}</span>

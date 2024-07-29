@@ -22,19 +22,19 @@ export default function Search({
   setSearch,
   options,
   onChangeOptions,
-  info = {},
+  info,
 }: {
   search: string;
   setSearch: (q: string) => void;
   onChangeOptions: (options: SearchOptions) => void;
   options: SearchOptions;
-  info: Info["namespaces"];
+  info: Info | undefined;
 }) {
   const status = useFormStatus();
 
   return (
     <>
-      <LocaleSelect info={info.namespaces} />
+      <LocaleSelect namespaces={info ? info.namespaces : {}} />
 
       <input
         type="search"
