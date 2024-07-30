@@ -18,7 +18,7 @@ export default function List({
 
   return (
     <>
-      <div className="bg-emerald-100 text-emerald-900 px-4 py-3 rounded-lg">
+      <div className="bg-yellow-100 text-yellow-900 px-4 py-2 rounded-lg">
         <p>
           Search has been completed in{" "}
           <b>{prettyMilliseconds(state?.ms ?? 0)}</b> over{" "}
@@ -32,7 +32,7 @@ export default function List({
             key={movie.metadata?.id + index.toString()}
             className="border-t border-yellow-700/10 pt-5 mt-5 grid gap-1"
           >
-            <h3 className="font-serif font-semibold text-xl">
+            <h3 className="font-serif font-semibold text-xl md:text-2xl">
               <a
                 href={movie.metadata?.url}
                 target="_blank"
@@ -42,7 +42,7 @@ export default function List({
               </a>
             </h3>
 
-            <p className="line-clamp-3 opacity-60">{movie.data}</p>
+            <p className="line-clamp-3 opacity-80">{movie.data}</p>
             <p className="flex">
               <span className="text-sm px-2 text-zinc-600 border border-zinc-300 rounded bg-white">
                 {movie.score}

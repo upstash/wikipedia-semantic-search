@@ -7,6 +7,7 @@ import List from "@/components/list";
 import Search from "@/components/search";
 import ErrorMessages from "@/components/error";
 import EmptyState from "@/components/empty";
+import { formatter } from "@/lib/utils";
 
 const initialState = {
   data: [],
@@ -55,6 +56,11 @@ export default function Page() {
         <h1 className="font-serif font-bold text-2xl md:text-3xl">
           Wikipedia Semantic Search
         </h1>
+        <p className="mt-1 opacity-80">
+          Our database has{" "}
+          <b>{formatter.format(info?.vectorCount ?? 0)} vectors</b> with{" "}
+          <b>{info?.dimension} dimensions</b>.
+        </p>
       </header>
 
       <Search

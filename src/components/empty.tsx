@@ -1,6 +1,5 @@
 import { Info, Result } from "@/lib/types";
 import React from "react";
-import { formatter } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 
 export default function EmptyState({
@@ -34,46 +33,37 @@ export default function EmptyState({
 
   return (
     <>
-      <div className="bg-yellow-100 text-yellow-900 px-4 py-3 rounded-lg">
-        <p>
-          Our database has <b>{formatter.format(vectorCount)} vectors</b> with{" "}
-          <b>{dimension} dimensions</b>.
-        </p>
-      </div>
+      <h3>{t("exampleTitle")}</h3>
 
-      <div className="mt-8">
-        <h3>{t("exampleTitle")}</h3>
-
-        <ol className="mt-2 list-decimal grid gap-2 list-inside">
-          <li>
-            <a
-              href=""
-              className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-xl"
-              onClick={_onSearch}
-            >
-              {t("example1")}
-            </a>
-          </li>
-          <li>
-            <a
-              href=""
-              className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-xl"
-              onClick={_onSearch}
-            >
-              {t("example2")}
-            </a>
-          </li>
-          <li>
-            <a
-              href=""
-              className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-xl"
-              onClick={_onSearch}
-            >
-              {t("example3")}
-            </a>
-          </li>
-        </ol>
-      </div>
+      <ol className="mt-2 list-decimal grid gap-2 list-inside">
+        <li>
+          <a
+            href=""
+            className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-xl"
+            onClick={_onSearch}
+          >
+            {t("example1")}
+          </a>
+        </li>
+        <li>
+          <a
+            href=""
+            className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-xl"
+            onClick={_onSearch}
+          >
+            {t("example2")}
+          </a>
+        </li>
+        <li>
+          <a
+            href=""
+            className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-xl"
+            onClick={_onSearch}
+          >
+            {t("example3")}
+          </a>
+        </li>
+      </ol>
     </>
   );
 }
