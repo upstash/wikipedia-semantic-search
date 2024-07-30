@@ -3,7 +3,6 @@
 import { getData, getInfo } from "./actions";
 import { Info, Result, ResultCode, SearchOptions } from "@/lib/types";
 import React, { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
 import List from "@/components/list";
 import Search from "@/components/search";
 import ErrorMessages from "@/components/error";
@@ -15,8 +14,6 @@ const initialState = {
 };
 
 export default function Page() {
-  const t = useTranslations();
-
   const [state, setState] = useState<Result | undefined>(initialState);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchValues, setSearchValues] = React.useState<SearchOptions>({
@@ -56,7 +53,7 @@ export default function Page() {
     <div className="max-w-screen-md px-4 md:px-8 py-8 md:py-12">
       <header>
         <h1 className="font-serif font-bold text-2xl md:text-3xl">
-          {t("title")}
+          Wikipedia Semantic Search
         </h1>
       </header>
 

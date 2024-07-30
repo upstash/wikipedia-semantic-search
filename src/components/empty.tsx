@@ -1,6 +1,7 @@
 import { Info, Result } from "@/lib/types";
 import React from "react";
 import { formatter } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function EmptyState({
   loading,
@@ -13,6 +14,8 @@ export default function EmptyState({
   state: Result | undefined;
   onSearch: (query: string) => void;
 }) {
+  const t = useTranslations();
+
   const vectorCount = info?.vectorCount ?? 0;
   const dimension = info?.dimension ?? 0;
 
@@ -39,7 +42,7 @@ export default function EmptyState({
       </div>
 
       <div className="mt-8">
-        <h3>Örnek sorgular;</h3>
+        <h3>{t("exampleTitle")}</h3>
 
         <ol className="mt-2 list-decimal grid gap-2 list-inside">
           <li>
@@ -48,7 +51,7 @@ export default function EmptyState({
               className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-xl"
               onClick={_onSearch}
             >
-              Dünyanın en yüksek dağı hangisi?
+              {t("example1")}
             </a>
           </li>
           <li>
@@ -57,7 +60,7 @@ export default function EmptyState({
               className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-xl"
               onClick={_onSearch}
             >
-              Rönesans dönemi sanatının özellikleri nelerdir?
+              {t("example2")}
             </a>
           </li>
           <li>
@@ -66,7 +69,7 @@ export default function EmptyState({
               className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-xl"
               onClick={_onSearch}
             >
-              Tesla'nın buluşları nelerdir?
+              {t("example3")}
             </a>
           </li>
         </ol>
