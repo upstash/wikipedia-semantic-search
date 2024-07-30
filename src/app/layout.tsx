@@ -16,7 +16,7 @@ const serif = EB_Garamond({
   subsets: ["latin", "latin-ext"],
   variable: "--font-serif",
   style: ["normal"],
-  weight: ["400", "700"],
+  weight: ["400", "600"],
   display: "swap",
 });
 
@@ -24,7 +24,7 @@ const sans = Inter({
   subsets: ["latin", "latin-ext"],
   variable: "--font-sans",
   style: ["normal"],
-  weight: ["400", "700"],
+  weight: ["400", "600"],
   display: "swap",
 });
 
@@ -43,7 +43,7 @@ export default async function RootLayout({
       lang={locale}
       className={`${serif.variable} ${sans.variable} font-sans`}
     >
-      <body className="antialiased min-h-screen from-yellow-50/50 bg-gradient-to-b">
+      <body className="antialiased text-yellow-950 min-h-screen from-yellow-50/50 bg-gradient-to-b">
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>

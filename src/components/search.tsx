@@ -1,6 +1,5 @@
 "use client";
 
-import { useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
 import { Info, SearchOptions } from "@/lib/types";
 import LocaleSelect from "@/components/locale-select";
@@ -17,18 +16,20 @@ import {
 } from "@/components/primitive/toggle-group";
 
 export default function Search({
+  loading,
   info,
   searchValues,
   onChangeSearchValues,
   onSubmit = () => {},
+  onClear = () => {},
 }: {
+  loading: boolean;
   info: Info | undefined;
   searchValues: SearchOptions;
   onChangeSearchValues: (options: SearchOptions) => void;
   onSubmit: (options: SearchOptions) => void;
+  onClear?: () => void;
 }) {
-  const status = useFormStatus();
-
   return (
     <form
       onSubmit={(e) => {
@@ -48,7 +49,7 @@ export default function Search({
           })
         }
         placeholder="Search..."
-        disabled={status.pending}
+        disabled={loading}
         className="grow w-full md:w-auto border border-zinc-300 px-2 h-10 rounded-lg"
       />
 
@@ -94,9 +95,9 @@ export default function Search({
         type="submit"
         className={cn(
           "px-4 h-10 bg-black text-white rounded-lg",
-          status.pending && "opacity-30",
+          loading && "opacity-30",
         )}
-        disabled={status.pending}
+        disabled={loading}
       >
         Search
       </button>

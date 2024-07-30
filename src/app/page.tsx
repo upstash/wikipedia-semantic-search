@@ -6,7 +6,6 @@ import React, { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import List from "@/components/list";
 import Search from "@/components/search";
-import InfoMessages from "@/components/info";
 import ErrorMessages from "@/components/error";
 import EmptyState from "@/components/empty";
 
@@ -19,6 +18,7 @@ export default function Page() {
   const t = useTranslations();
 
   const [state, setState] = useState<Result | undefined>(initialState);
+  const [loading, setLoading] = useState<boolean>(false);
   const [searchValues, setSearchValues] = React.useState<SearchOptions>({
     query: "",
     topK: 10,
@@ -31,12 +31,21 @@ export default function Page() {
   };
 
   const fetchData = async (options: SearchOptions) => {
-    const data = await getData(options);
-    setState(data);
+    try {
+      setLoading(true);
+      const data = await getData(options);
+      setState(data);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onChangeSearchValues = (values: SearchOptions) => {
     setSearchValues(values);
+  };
+
+  const onClear = () => {
+    // setSearchValues(values);
   };
 
   useEffect(() => {
@@ -52,26 +61,38 @@ export default function Page() {
       </header>
 
       <Search
+        loading={loading}
         info={info}
         searchValues={searchValues}
         onChangeSearchValues={onChangeSearchValues}
         onSubmit={fetchData}
+        onClear={onClear}
       />
-
-      <div className="mt-8">
-        <InfoMessages state={state} info={info} />
-      </div>
 
       <div className="mt-8">
         <ErrorMessages state={state} />
       </div>
 
       <div className="mt-8">
-        <EmptyState state={state} />
+        <EmptyState
+          loading={loading}
+          state={state}
+          info={info}
+          onSearch={(query: string) => {
+            setSearchValues({
+              ...searchValues,
+              query,
+            });
+            return fetchData({
+              ...searchValues,
+              query,
+            });
+          }}
+        />
       </div>
 
       <div className="mt-8">
-        <List state={state} />
+        <List loading={loading} state={state} info={info} />
       </div>
     </div>
   );
