@@ -41,5 +41,6 @@ export interface Info {
 }
 
 export type SearchOptions = {
+  query: string;
   topK: 5 | 10 | 20;
 };

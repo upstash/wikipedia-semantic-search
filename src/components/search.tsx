@@ -17,35 +17,42 @@ import {
 } from "@/components/primitive/toggle-group";
 
 export default function Search({
-  search,
-  setSearch,
-  options,
-  onChangeOptions,
   info,
+  searchValues,
+  onChangeSearchValues,
+  onSubmit = () => {},
 }: {
-  search: string;
-  setSearch: (q: string) => void;
-  onChangeOptions: (options: SearchOptions) => void;
-  options: SearchOptions;
   info: Info | undefined;
+  searchValues: SearchOptions;
+  onChangeSearchValues: (options: SearchOptions) => void;
+  onSubmit: (options: SearchOptions) => void;
 }) {
   const status = useFormStatus();
 
   return (
-    <>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(searchValues);
+      }}
+      className="mt-10 flex flex-wrap gap-2 items-center"
+    >
       <input
         type="search"
         name="query"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        value={searchValues.query}
+        onChange={(e) =>
+          onChangeSearchValues({
+            ...searchValues,
+            query: e.target.value,
+          })
+        }
         placeholder="Search..."
         disabled={status.pending}
         className="grow w-full md:w-auto border border-zinc-300 px-2 h-10 rounded-lg"
       />
 
       <LocaleSelect namespaces={info ? info.namespaces : {}} />
-
-      <input type="hidden" name="topK" value={options.topK} />
 
       <Popover>
         <PopoverTrigger>
@@ -65,11 +72,11 @@ export default function Search({
               </label>
 
               <ToggleGroup
-                value={options.topK.toString()}
+                value={searchValues.topK.toString()}
                 type="single"
                 onValueChange={(value) => {
-                  onChangeOptions({
-                    ...options,
+                  onChangeSearchValues({
+                    ...searchValues,
                     topK: Number(value) as SearchOptions["topK"],
                   });
                 }}
@@ -93,6 +100,6 @@ export default function Search({
       >
         Search
       </button>
-    </>
+    </form>
   );
 }

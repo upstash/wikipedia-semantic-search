@@ -1,8 +1,7 @@
 "use client";
 
-import { useFormState } from "react-dom";
-import { getInfo, searchMovies } from "./actions";
-import { Info, ResultCode, SearchOptions } from "@/lib/types";
+import { getData, getInfo } from "./actions";
+import { Info, Result, ResultCode, SearchOptions } from "@/lib/types";
 import React, { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import List from "@/components/list";
@@ -19,21 +18,29 @@ const initialState = {
 export default function Page() {
   const t = useTranslations();
 
-  const [info, setInfo] = useState<Info | undefined>(undefined);
-
-  const [state, formAction] = useFormState(searchMovies, initialState);
-  const [search, setSearch] = useState<string>("");
-  const [options, setOptions] = React.useState<SearchOptions>({
+  const [state, setState] = useState<Result | undefined>(initialState);
+  const [searchValues, setSearchValues] = React.useState<SearchOptions>({
+    query: "",
     topK: 10,
   });
+  const [info, setInfo] = useState<Info | undefined>(undefined);
 
-  const updateViews = async () => {
+  const fetchInfo = async () => {
     const info = await getInfo();
     setInfo(info);
   };
 
+  const fetchData = async (options: SearchOptions) => {
+    const data = await getData(options);
+    setState(data);
+  };
+
+  const onChangeSearchValues = (values: SearchOptions) => {
+    setSearchValues(values);
+  };
+
   useEffect(() => {
-    updateViews();
+    fetchInfo();
   }, []);
 
   return (
@@ -44,20 +51,12 @@ export default function Page() {
         </h1>
       </header>
 
-      <form
-        action={formAction}
-        className="mt-10 flex flex-wrap gap-2 items-center"
-      >
-        <Search
-          info={info}
-          search={search}
-          setSearch={setSearch}
-          options={options}
-          onChangeOptions={(data: SearchOptions) => {
-            setOptions(data);
-          }}
-        />
-      </form>
+      <Search
+        info={info}
+        searchValues={searchValues}
+        onChangeSearchValues={onChangeSearchValues}
+        onSubmit={fetchData}
+      />
 
       <div className="mt-8">
         <InfoMessages state={state} info={info} />

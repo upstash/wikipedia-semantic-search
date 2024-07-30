@@ -2,7 +2,13 @@
 
 import { Index } from "@upstash/vector";
 import { z } from "zod";
-import { Info, Result, ResultCode, WikiMetadata } from "@/lib/types";
+import {
+  Info,
+  Result,
+  ResultCode,
+  SearchOptions,
+  WikiMetadata,
+} from "@/lib/types";
 import { getUserLocale } from "@/service";
 
 const index = new Index<WikiMetadata>({
@@ -10,17 +16,14 @@ const index = new Index<WikiMetadata>({
   token: process.env.UPSTASH_VECTOR_REST_TOKEN,
 });
 
-export async function searchMovies(
-  _prevState: Result | undefined,
-  formData: FormData,
+export async function getData(
+  values: SearchOptions,
 ): Promise<Result | undefined> {
   try {
     const namespace = await getUserLocale();
 
-    const query = formData.get("query");
-    const topK = Number(formData.get("topK"));
-
-    console.log(query, topK);
+    const query = values.query;
+    const topK = values.topK;
 
     const parsedCredentials = z
       .object({
