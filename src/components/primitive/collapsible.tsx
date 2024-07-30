@@ -33,7 +33,10 @@ const CollapsibleTrigger = ({
   className?: string;
 }) => {
   return (
-    <CollapsiblePrimitive.Trigger className={cn("", className)} {...props} />
+    <CollapsiblePrimitive.Trigger
+      className={cn("text-left", className)}
+      {...props}
+    />
   );
 };
 

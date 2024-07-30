@@ -2,19 +2,18 @@
 
 import { useFormState } from "react-dom";
 import { getInfo, searchMovies } from "./actions";
-import { Info, ResultCode } from "@/lib/types";
+import { Info, ResultCode, SearchOptions } from "@/lib/types";
 import React, { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import List from "@/components/list";
 import Search from "@/components/search";
+import InfoMessages from "@/components/info";
+import ErrorMessages from "@/components/error";
+import EmptyState from "@/components/empty";
 
 const initialState = {
   data: [],
   code: ResultCode.Empty,
-};
-
-export type options = {
-  topK: 5 | 10 | 20;
 };
 
 export default function Page() {
@@ -24,7 +23,7 @@ export default function Page() {
 
   const [state, formAction] = useFormState(searchMovies, initialState);
   const [search, setSearch] = useState<string>("");
-  const [options, setOptions] = React.useState<options>({
+  const [options, setOptions] = React.useState<SearchOptions>({
     topK: 10,
   });
 
@@ -38,25 +37,42 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="max-w-screen-md px-8 py-12">
+    <div className="max-w-screen-md px-4 md:px-8 py-8 md:py-12">
       <header>
-        <h1 className="">{t("title")}</h1>
+        <h1 className="font-serif font-bold text-2xl md:text-3xl">
+          {t("title")}
+        </h1>
       </header>
 
-      <form action={formAction} className="mt-10 flex gap-2 items-center">
+      <form
+        action={formAction}
+        className="mt-10 flex flex-wrap gap-2 items-center"
+      >
         <Search
           info={info}
           search={search}
           setSearch={setSearch}
           options={options}
-          onChangeOptions={(data: options) => {
+          onChangeOptions={(data: SearchOptions) => {
             setOptions(data);
           }}
         />
       </form>
 
-      <div className="mt-10">
-        <List state={state} info={info} />
+      <div className="mt-8">
+        <InfoMessages state={state} info={info} />
+      </div>
+
+      <div className="mt-8">
+        <ErrorMessages state={state} />
+      </div>
+
+      <div className="mt-8">
+        <EmptyState state={state} />
+      </div>
+
+      <div className="mt-8">
+        <List state={state} />
       </div>
     </div>
   );

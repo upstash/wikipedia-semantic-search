@@ -33,8 +33,6 @@ export async function searchMovies(
         topK,
       });
 
-    // console.log(parsedCredentials.error?.message);
-
     if (parsedCredentials.error) {
       return {
         code: ResultCode.MinLengthError,

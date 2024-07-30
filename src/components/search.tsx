@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { Info, SearchOptions } from "@/lib/types";
 import LocaleSelect from "@/components/locale-select";
 import React from "react";
-import { options } from "@/app/page";
 import {
   Popover,
   PopoverContent,
@@ -34,8 +33,6 @@ export default function Search({
 
   return (
     <>
-      <LocaleSelect namespaces={info ? info.namespaces : {}} />
-
       <input
         type="search"
         name="query"
@@ -43,27 +40,25 @@ export default function Search({
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search..."
         disabled={status.pending}
-        className="grow border px-2 h-10 rounded-md"
+        className="grow w-full md:w-auto border border-zinc-300 px-2 h-10 rounded-lg"
       />
+
+      <LocaleSelect namespaces={info ? info.namespaces : {}} />
 
       <input type="hidden" name="topK" value={options.topK} />
 
       <Popover>
         <PopoverTrigger>
           <button
-            className="rounded-full w-10 h-10 inline-flex items-center
-        justify-center bg-zinc-50 cursor-default outline-none
+            className="rounded-lg w-10 h-10 border-zinc-300 border inline-flex items-center
+        justify-center bg-white cursor-default outline-none
         hover:bg-zinc-200 focus:shadow-black"
           >
             <MixerHorizontalIcon />
           </button>
         </PopoverTrigger>
         <PopoverContent>
-          <div className="flex flex-col gap-2.5">
-            <p className="text-mauve12 text-[15px] font-medium mb-2.5">
-              Search Settings
-            </p>
-
+          <div className="flex flex-col gap-2">
             <fieldset className="flex gap-4 items-center">
               <label className="grow" htmlFor="topK">
                 TopK
@@ -75,7 +70,7 @@ export default function Search({
                 onValueChange={(value) => {
                   onChangeOptions({
                     ...options,
-                    topK: Number(value) as options["topK"],
+                    topK: Number(value) as SearchOptions["topK"],
                   });
                 }}
               >
@@ -90,7 +85,10 @@ export default function Search({
 
       <button
         type="submit"
-        className={cn("border px-2 h-10", status.pending && "opacity-50")}
+        className={cn(
+          "px-4 h-10 bg-black text-white rounded-lg",
+          status.pending && "opacity-30",
+        )}
         disabled={status.pending}
       >
         Search
