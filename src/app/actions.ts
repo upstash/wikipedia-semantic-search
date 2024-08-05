@@ -45,16 +45,20 @@ export async function getData(
 
     const q = {
       data: query as string,
-      topK: topK as number,
+      topK: Math.max(topK, 50), // Over query the index to return better results, if topK is small
       includeData: true,
       includeVectors: false,
       includeMetadata: true,
     };
 
     const t0 = performance.now();
-    const data = await index.query<WikiMetadata>(q, { namespace });
+    let data = await index.query<WikiMetadata>(q, { namespace });
     const t1 = performance.now();
     const ms = t1 - t0;
+
+    // The response from the server is sorted (highest scores first, 
+    // so we can just take the first topK many elements)
+    data = data.slice(0, topK);
 
     return {
       code: ResultCode.Success,
