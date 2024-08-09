@@ -43,6 +43,7 @@ export default function List({
             </h3>
 
             <p className="line-clamp-3 opacity-80">{movie.data}</p>
+
             <p className="flex">
               <span className="text-sm px-2 text-zinc-600 border border-zinc-300 rounded bg-white">
                 {movie.score}

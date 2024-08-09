@@ -4,16 +4,6 @@ import { cn } from "@/lib/utils";
 import { Info, SearchOptions } from "@/lib/types";
 import LocaleSelect from "@/components/locale-select";
 import React from "react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/primitive/popover";
-import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/primitive/toggle-group";
 
 export default function Search({
   loading,
@@ -55,7 +45,7 @@ export default function Search({
 
       <LocaleSelect namespaces={info ? info.namespaces : {}} />
 
-      <Popover>
+      {/*<Popover>
         <PopoverTrigger>
           <button
             className="rounded-lg w-10 h-10 border-zinc-300 border inline-flex items-center
@@ -89,7 +79,7 @@ export default function Search({
             </fieldset>
           </div>
         </PopoverContent>
-      </Popover>
+      </Popover>*/}
 
       <button
         type="submit"

@@ -23,17 +23,15 @@ export async function getData(
     const namespace = await getUserLocale();
 
     const query = values.query;
-    const topK = values.topK;
+    const topK = 100;
 
     const parsedCredentials = z
       .object({
         query: z.string().min(2),
-        topK: z.number().min(5).max(20),
       })
       .required()
       .safeParse({
         query,
-        topK,
       });
 
     if (parsedCredentials.error) {
@@ -45,7 +43,7 @@ export async function getData(
 
     const q = {
       data: query as string,
-      topK: topK as number,
+      topK: topK,
       includeData: true,
       includeVectors: false,
       includeMetadata: true,
