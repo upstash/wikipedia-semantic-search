@@ -7,4 +7,6 @@ export const buildRagChat = (sessionId: string) =>
     sessionId,
     vector: index,
     redis: redis,
+    debug: true,
+    namespace: "en",
   });

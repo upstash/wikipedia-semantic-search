@@ -20,6 +20,14 @@ export async function getMessages() {
   return messages;
 }
 
+export async function clearMessages() {
+  const sessionId = cookies().get("sessionId")?.value;
+
+  if (!sessionId) throw new Error("No sessionId found");
+
+  await buildRagChat(sessionId).history.deleteMessages({ sessionId });
+}
+
 export async function getData(query: string): Promise<Result | undefined> {
   try {
     const namespace = await getUserLocale();

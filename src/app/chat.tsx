@@ -1,6 +1,6 @@
-import { getMessages } from "@/lib/actions";
+import { clearMessages, getMessages } from "@/lib/actions";
 import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useChat } from "ai/react";
 import { useEffect } from "react";
 
@@ -44,7 +44,12 @@ export const Chat = () => {
 
   return (
     <div className="bg-amber-50 rounded-md border border-yellow-950/20 py-5 px-2">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 max-h-[calc(100vh-380px)] min-h-[300px] overflow-scroll">
+        {messagesWithLoading.length === 0 && (
+          <div className="text-center text-yellow-950/40 mt-6">
+            Chat with the wikipedia assistant
+          </div>
+        )}
         {messagesWithLoading.map((message, i) => (
           <div
             className={cn(
@@ -63,7 +68,6 @@ export const Chat = () => {
           </div>
         ))}
       </div>
-      {error && <div>ERROR: {error.message}</div>}
       <form onSubmit={handleSubmit} className="flex gap-2 mt-5">
         <input
           type="text"
@@ -80,6 +84,15 @@ export const Chat = () => {
           {"->"}
         </button>
       </form>
+      {error && <div className="text-red-600 mt-2">Error: {error.message}</div>}
+      <button
+        onClick={() => {
+          void clearMessages();
+          setMessages([]);
+        }}
+      >
+        clear messages
+      </button>
     </div>
   );
 };
