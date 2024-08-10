@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ChatTab } from "../components/chat-tab";
 import { Header } from "@/components/header";
 import { SearchTab } from "@/components/search-tab";
-import { Tab } from "@/components/primitive/Tab";
+import { Tab } from "@/components/primitive/tab";
 
 export default function Page() {
   const [tab, setTab] = useState<"chat" | "search">("search");
