@@ -1,14 +1,24 @@
 "use server";
 
-import { Index } from "@upstash/vector";
 import { z } from "zod";
 import { Info, Result, ResultCode, WikiMetadata } from "@/lib/types";
 import { getUserLocale } from "@/service";
+import { index } from "./dbs";
+import { buildRagChat } from "./rag-chat";
+import { cookies } from "next/headers";
 
-const index = new Index<WikiMetadata>({
-  url: process.env.UPSTASH_VECTOR_REST_URL,
-  token: process.env.UPSTASH_VECTOR_REST_TOKEN,
-});
+export async function getMessages() {
+  const sessionId = cookies().get("sessionId")?.value;
+
+  if (!sessionId) throw new Error("No sessionId found");
+
+  const messages = await buildRagChat(sessionId).history.getMessages({
+    sessionId: sessionId,
+    amount: 10,
+  });
+
+  return messages;
+}
 
 export async function getData(query: string): Promise<Result | undefined> {
   try {

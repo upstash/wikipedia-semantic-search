@@ -23,7 +23,7 @@ export default function Search({
         e.preventDefault();
         onSubmit();
       }}
-      className="mt-10 flex flex-wrap gap-2 items-center"
+      className="flex flex-wrap gap-2 items-center"
     >
       <input
         type="search"

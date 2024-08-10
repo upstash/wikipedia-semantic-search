@@ -3,7 +3,6 @@ import { Metadata } from "next";
 import { EB_Garamond, Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
