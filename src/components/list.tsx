@@ -46,11 +46,9 @@ export default function List({
 
             <p className="flex">
               <span className="text-sm px-2 text-zinc-600 border border-zinc-300 rounded bg-white">
-                {movie.score}
+                Score: {movie.score}
               </span>
             </p>
-
-            {/*<span className="">{decodeURI(movie.metadata?.url || "")}</span>*/}
           </article>
         ))}
       </div>
