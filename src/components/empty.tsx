@@ -1,22 +1,17 @@
-import { Info, Result } from "@/lib/types";
+import { Result } from "@/lib/types";
 import React from "react";
 import { useTranslations } from "next-intl";
 
 export default function EmptyState({
   loading,
-  info,
   state,
   onSearch = () => {},
 }: {
   loading: boolean;
-  info: Info | undefined;
   state: Result | undefined;
   onSearch: (query: string) => void;
 }) {
   const t = useTranslations();
-
-  const vectorCount = info?.vectorCount ?? 0;
-  const dimension = info?.dimension ?? 0;
 
   const _onSearch = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();

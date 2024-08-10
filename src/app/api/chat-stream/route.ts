@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
     const ragChat = buildRagChat(sessionId);
 
     const response = await ragChat.chat(question, { streaming: true });
-    throw new Error("Not implemented");
 
     return aiUseChatAdapter(response);
   } catch (error) {
