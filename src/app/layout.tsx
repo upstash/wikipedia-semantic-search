@@ -3,10 +3,13 @@ import { Metadata } from "next";
 import { EB_Garamond, Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "Movies Semantic Search",
-  description: "A simple movie search engine",
+  title: "Wikipedia Semantic Search by Upstash Vector",
+  description:
+    "An experimental project to demonstrate the scalability of Upstash Vector with large datasets. We vectorized 23 million Wikipedia articles in 11 languages and stored 144 millin vectors in a single Upstash Vector index.",
   icons: {
     icon: "/favicon-32x32.png",
   },
@@ -44,9 +47,11 @@ export default async function RootLayout({
       className={`${serif.variable} ${sans.variable} font-sans`}
     >
       <body className="antialiased text-yellow-950 min-h-screen from-yellow-50/50 bg-gradient-to-b">
-        <NextIntlClientProvider messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <Providers>
+          <NextIntlClientProvider messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </Providers>
       </body>
     </html>
   );

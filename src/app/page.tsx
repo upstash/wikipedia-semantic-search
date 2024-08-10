@@ -1,75 +1,69 @@
 "use client";
 
 import { getData, getInfo } from "./actions";
-import { Info, Result, ResultCode, SearchOptions } from "@/lib/types";
-import React, { useEffect, useState } from "react";
+import { ResultCode } from "@/lib/types";
+import { useCallback } from "react";
 import List from "@/components/list";
 import Search from "@/components/search";
 import ErrorMessages from "@/components/error";
 import EmptyState from "@/components/empty";
 import { formatter } from "@/lib/utils";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const initialState = {
+const emptyState = {
   data: [],
   code: ResultCode.Empty,
 };
 
 export default function Page() {
-  const [state, setState] = useState<Result | undefined>(initialState);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [searchValues, setSearchValues] = React.useState<SearchOptions>({
-    query: "",
-    topK: 10,
+  const [search, setSearch] = useQueryState();
+
+  const {
+    data,
+    mutate: fetchResults,
+    reset: resetResults,
+    isPending: isLoading,
+  } = useMutation({
+    mutationFn: async (query: string) => await getData(query),
   });
-  const [info, setInfo] = useState<Info | undefined>(undefined);
 
-  const fetchInfo = async () => {
-    const info = await getInfo();
-    setInfo(info);
+  const state = data ?? emptyState;
+
+  const { data: info } = useQuery({
+    queryKey: ["info"],
+    queryFn: async () => await getInfo(),
+  });
+
+  const onSubmit = () => {
+    fetchResults(search);
   };
-
-  const fetchData = async (options: SearchOptions) => {
-    try {
-      setLoading(true);
-      const data = await getData(options);
-      setState(data);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const onChangeSearchValues = (values: SearchOptions) => {
-    setSearchValues(values);
-  };
-
-  const onClear = () => {
-    // setSearchValues(values);
-  };
-
-  useEffect(() => {
-    fetchInfo();
-  }, []);
 
   return (
     <div className="max-w-screen-md px-4 md:px-8 py-8 md:py-12">
       <header>
-        <h1 className="font-serif font-bold text-2xl md:text-3xl">
-          Wikipedia Semantic Search
+        <h1
+          onClick={() => {
+            setSearch("");
+            resetResults();
+          }}
+          className="font-serif font-bold text-2xl md:text-3xl hover:underline cursor-pointer"
+        >
+          Wikipedia Semantic Search by Upstash Vector
         </h1>
         <p className="mt-1 opacity-80">
           Our database has{" "}
-          <b>{formatter.format(info?.vectorCount ?? 0)} vectors</b> with{" "}
-          <b>{info?.dimension} dimensions</b>.
+          <b>{info ? formatter.format(info.vectorCount) : "..."} vectors</b>{" "}
+          with <b>{info?.dimension ?? "..."} dimensions</b>.
         </p>
       </header>
 
       <Search
-        loading={loading}
+        value={search}
+        onChange={setSearch}
+        onSubmit={onSubmit}
+        loading={isLoading}
         info={info}
-        searchValues={searchValues}
-        onChangeSearchValues={onChangeSearchValues}
-        onSubmit={fetchData}
-        onClear={onClear}
       />
 
       <div className="mt-8">
@@ -78,25 +72,43 @@ export default function Page() {
 
       <div className="mt-8">
         <EmptyState
-          loading={loading}
+          loading={isLoading}
           state={state}
           info={info}
           onSearch={(query: string) => {
-            setSearchValues({
-              ...searchValues,
-              query,
-            });
-            return fetchData({
-              ...searchValues,
-              query,
-            });
+            setSearch(query);
+            fetchResults(query);
           }}
         />
       </div>
 
       <div className="mt-8">
-        <List loading={loading} state={state} info={info} />
+        <List loading={isLoading} state={state} info={info} />
       </div>
     </div>
   );
 }
+
+const useQueryState = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const state = searchParams.get("query") ?? "";
+
+  const setState = useCallback(
+    (state: string) => {
+      console.log("oathname", pathname);
+      if (!state) router.push(pathname);
+      else
+        router.push(
+          `${pathname}?${new URLSearchParams({
+            query: state,
+          })}`
+        );
+    },
+    [searchParams]
+  );
+
+  return [state, setState] as const;
+};

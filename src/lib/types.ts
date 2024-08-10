@@ -39,8 +39,3 @@ export interface Info {
     [key: string]: NamespaceData;
   };
 }
-
-export type SearchOptions = {
-  query: string;
-  topK: 5 | 10 | 20;
-};
