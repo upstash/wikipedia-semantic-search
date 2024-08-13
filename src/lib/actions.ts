@@ -4,15 +4,15 @@ import { z } from "zod";
 import { Info, Result, ResultCode, WikiMetadata } from "@/lib/types";
 import { getUserLocale } from "@/service";
 import { index } from "./dbs";
-import { buildRagChat } from "./rag-chat";
 import { cookies } from "next/headers";
+import { ragChat } from "./rag-chat";
 
-export async function getMessages() {
+export async function serverGetMessages() {
   const sessionId = cookies().get("sessionId")?.value;
 
   if (!sessionId) throw new Error("No sessionId found");
 
-  const messages = await buildRagChat(sessionId).history.getMessages({
+  const messages = await ragChat.history.getMessages({
     sessionId: sessionId,
     amount: 10,
   });
@@ -20,15 +20,15 @@ export async function getMessages() {
   return messages;
 }
 
-export async function clearMessages() {
+export async function serverClearMessages() {
   const sessionId = cookies().get("sessionId")?.value;
 
   if (!sessionId) throw new Error("No sessionId found");
 
-  await buildRagChat(sessionId).history.deleteMessages({ sessionId });
+  await ragChat.history.deleteMessages({ sessionId });
 }
 
-export async function getData(query: string): Promise<Result | undefined> {
+export async function serverQueryIndex(query: string) {
   try {
     const namespace = await getUserLocale();
     const parsedCredentials = z
@@ -74,7 +74,7 @@ export async function getData(query: string): Promise<Result | undefined> {
   }
 }
 
-export async function getInfo(): Promise<Info | undefined> {
+export async function serverGetInfo(): Promise<Info | undefined> {
   try {
     const data = await index.info();
     return data;

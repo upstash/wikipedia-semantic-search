@@ -1,5 +1,5 @@
-import { getData } from "@/lib/actions";
-import { Info, ResultCode } from "@/lib/types";
+import { serverQueryIndex } from "@/lib/actions";
+import { ResultCode } from "@/lib/types";
 import { useMutation } from "@tanstack/react-query";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
@@ -13,13 +13,7 @@ const emptyState = {
   code: ResultCode.Empty,
 };
 
-export const SearchTab = ({
-  info,
-  active,
-}: {
-  info?: Info;
-  active: boolean;
-}) => {
+export const SearchTab = ({ active }: { active: boolean }) => {
   const [search, setSearch] = useState<string>("");
   const [searchParam, setSearchParam] = useQuerySearchParam();
   const [isInitial, setIsInitial] = useState(true);
@@ -29,7 +23,7 @@ export const SearchTab = ({
     mutate: fetchResults,
     isPending: isLoading,
   } = useMutation({
-    mutationFn: async (query: string) => await getData(query),
+    mutationFn: async (query: string) => await serverQueryIndex(query),
   });
   const state = data ?? emptyState;
 
@@ -51,8 +45,7 @@ export const SearchTab = ({
         value={search}
         onChange={setSearch}
         onSubmit={onSubmit}
-        loading={isLoading}
-        info={info}
+        isLoading={isLoading}
       />
 
       <div className="mt-8">
@@ -72,7 +65,7 @@ export const SearchTab = ({
       </div>
 
       <div className="mt-8">
-        <List loading={isLoading} state={state} info={info} />
+        <List state={state} />
       </div>
     </div>
   );

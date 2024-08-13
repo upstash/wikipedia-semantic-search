@@ -1,17 +1,11 @@
-import { Info, Result } from "@/lib/types";
-import React from "react";
+import { Result } from "@/lib/types";
 import prettyMilliseconds from "pretty-ms";
 import { formatter } from "@/lib/utils";
+import { useFetchInfo } from "@/lib/use-fetch-info";
 
-export default function List({
-  loading,
-  info,
-  state,
-}: {
-  loading: boolean;
-  info: Info | undefined;
-  state: Result | undefined;
-}) {
+export default function List({ state }: { state: Result | undefined }) {
+  const { data: info } = useFetchInfo();
+
   if (state?.data.length === 0) {
     return null;
   }

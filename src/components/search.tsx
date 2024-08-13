@@ -1,22 +1,22 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Info } from "@/lib/types";
 import LocaleSelect from "@/components/locale-select";
+import { useFetchInfo } from "@/lib/use-fetch-info";
 
 export default function Search({
-  loading,
-  info,
+  isLoading,
   value,
   onChange,
   onSubmit = () => {},
 }: {
-  loading: boolean;
-  info: Info | undefined;
+  isLoading: boolean;
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
 }) {
+  const { data: info } = useFetchInfo();
+
   return (
     <form
       onSubmit={(e) => {
@@ -31,19 +31,19 @@ export default function Search({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search..."
-        disabled={loading}
+        disabled={isLoading}
         className="grow w-full md:w-auto border border-zinc-300 px-2 h-10 rounded-lg"
       />
 
-      <LocaleSelect namespaces={info ? info.namespaces : {}} />
+      <LocaleSelect />
 
       <button
         type="submit"
         className={cn(
           "px-4 h-10 bg-black text-white rounded-lg",
-          loading && "opacity-30"
+          isLoading && "opacity-30"
         )}
-        disabled={loading}
+        disabled={isLoading}
       >
         Search
       </button>

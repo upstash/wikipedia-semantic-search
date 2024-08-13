@@ -1,9 +1,11 @@
-import { Info } from "@/lib/types";
+import { useFetchInfo } from "@/lib/use-fetch-info";
 import { formatter } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
-export const Header = ({ info }: { info?: Info }) => {
+export const Header = () => {
   const router = useRouter();
+  const { data: info } = useFetchInfo();
+
   return (
     <header>
       <h1
