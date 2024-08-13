@@ -1,3 +1,4 @@
+import { MessageMetadata } from "@/lib/message-meta";
 import { ragChat } from "@/lib/rag-chat";
 import { aiUseChatAdapter } from "@upstash/rag-chat/nextjs";
 import type { Message } from "ai";
@@ -20,11 +21,35 @@ export async function POST(request: NextRequest) {
       streaming: true,
       sessionId: sessionId,
       namespace: namespace,
+
+      onChatHistoryFetched(messages) {
+        // Inject the history to metadata
+        this.metadata = {
+          ...this.metadata,
+          usedHistory: messages.map(({ role, content }) => ({
+            role,
+            content,
+          })),
+        };
+        return messages;
+      },
+      onContextFetched(context) {
+        // Inject the context to metadata
+        this.metadata = {
+          ...this.metadata,
+          usedContext: context.map((x) => ({
+            url: (x.metadata as { url: string | undefined }).url ?? "NO_URL",
+            data: x.data,
+          })),
+        };
+        return context;
+      },
+      metadata: {
+        usedPrompt: "<PROMPT_USED>",
+      } as MessageMetadata,
     });
 
-    return aiUseChatAdapter(response, {
-      urls: response.metadata.map((meta) => (meta as { url: string }).url),
-    });
+    return aiUseChatAdapter(response);
   } catch (error) {
     return Response.json("Server error", {
       status: 500,

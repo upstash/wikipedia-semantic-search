@@ -1,21 +1,23 @@
 "use server";
 
 import { z } from "zod";
-import { Info, Result, ResultCode, WikiMetadata } from "@/lib/types";
+import { Info, ResultCode, WikiMetadata } from "@/lib/types";
 import { getUserLocale } from "@/service";
 import { index } from "./dbs";
 import { cookies } from "next/headers";
 import { ragChat } from "./rag-chat";
+import { UpstashMessage } from "@upstash/rag-chat";
+import { MessageMetadata } from "@/app/api/chat-stream/route";
 
 export async function serverGetMessages() {
   const sessionId = cookies().get("sessionId")?.value;
 
   if (!sessionId) throw new Error("No sessionId found");
 
-  const messages = await ragChat.history.getMessages({
+  const messages = (await ragChat.history.getMessages({
     sessionId: sessionId,
     amount: 10,
-  });
+  })) as UpstashMessage<MessageMetadata>[];
 
   return messages;
 }

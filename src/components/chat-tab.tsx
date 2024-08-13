@@ -3,15 +3,27 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Message, useChat } from "ai/react";
 import { useLocale } from "next-intl";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import LocaleSelect from "./locale-select";
+import { DebugDrawer } from "./debug-drawer";
 
 const LOADING_MSG_ID = "loading-msg";
 
 export const ChatTab = ({ active }: { active: boolean }) => {
   const locale = useLocale();
+
+  // These also contain metadata for debugging like the context used
   const {
-    data,
+    data: serverMessages,
+    isLoading: isServerMessages,
+    refetch,
+  } = useQuery({
+    queryKey: ["messages"],
+    queryFn: async () => {
+      return await serverGetMessages();
+    },
+  });
+  const {
     messages,
     setMessages,
     handleInputChange,
@@ -19,48 +31,21 @@ export const ChatTab = ({ active }: { active: boolean }) => {
     input,
     error,
     isLoading,
-    metadata: met,
   } = useChat({
     api: "/api/chat-stream",
-
     body: {
       namespace: locale,
     },
-  });
-
-  const getMessageMeta = (id: string) => {
-    let index = 0;
-    for (const msg of messages.toReversed()) {
-      if (msg.id === id) {
-        break;
-      }
-      if (msg.role === "assistant") index++;
-    }
-    return data
-      ? (data.at(-index) as { prompt: string; urls: string[] })
-      : undefined;
-  };
-
-  const [metadata, setMetadata] = useState<
-    | {
-        prompt: string;
-        urls: string[];
-      }
-    | undefined
-  >();
-
-  const { data: initialMessages, isLoading: isMessagesLoading } = useQuery({
-    queryKey: ["messages"],
-    queryFn: async () => {
-      return await serverGetMessages();
+    onResponse: () => {
+      void refetch();
     },
   });
 
   useEffect(() => {
-    if (initialMessages) {
-      setMessages(initialMessages);
+    if (serverMessages) {
+      setMessages(serverMessages);
     }
-  }, [initialMessages]);
+  }, [serverMessages]);
 
   const messagesWithLoading: Message[] = [
     ...messages,
@@ -98,10 +83,12 @@ export const ChatTab = ({ active }: { active: boolean }) => {
           )}
           <div className="flex flex-col gap-4">
             {messagesWithLoading.map((message, i) => {
-              const meta = getMessageMeta(message.id);
-
+              const meta = serverMessages?.find(
+                (msg) => msg.id === message.id
+              )?.metadata;
               return (
                 <div
+                  key={message.id}
                   className={cn(
                     "flex",
                     message.role === "user"
@@ -122,17 +109,11 @@ export const ChatTab = ({ active }: { active: boolean }) => {
                     </div>
                     {message.role === "assistant" && meta && (
                       <div className="flex justify-end">
-                        <button
-                          onClick={() => {
-                            setMetadata({
-                              prompt: meta.prompt,
-                              urls: [],
-                            });
-                          }}
-                          className="text-amber-950 hover:underline"
-                        >
-                          see prompt
-                        </button>
+                        <DebugDrawer metadata={meta}>
+                          <button className="text-amber-950 hover:underline">
+                            debug
+                          </button>
+                        </DebugDrawer>
                       </div>
                     )}
                   </div>
@@ -147,7 +128,7 @@ export const ChatTab = ({ active }: { active: boolean }) => {
           <input
             type="text"
             value={input}
-            disabled={isLoading || isMessagesLoading}
+            disabled={isLoading || isServerMessages}
             onChange={handleInputChange}
             placeholder="Type a message..."
             className="border border-yellow-950/20 rounded-md px-2 h-10 w-full"
