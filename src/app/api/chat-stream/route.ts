@@ -1,5 +1,5 @@
 import { MessageMetadata } from "@/lib/message-meta";
-import { ragChat } from "@/lib/rag-chat";
+import { PROMPT, ragChat } from "@/lib/rag-chat";
 import { aiUseChatAdapter } from "@upstash/rag-chat/nextjs";
 import type { Message } from "ai";
 import { NextRequest } from "next/server";
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       },
       topK: 50,
       metadata: {
-        usedPrompt: "<PROMPT_USED>",
+        usedPrompt: PROMPT,
       } as MessageMetadata,
     });
 
