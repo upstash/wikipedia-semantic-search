@@ -27,7 +27,7 @@ export const DebugDrawer = ({
       <DialogTrigger>
         <button
           type="button"
-          className="underline cursor-pointer font-mono text-xs opacity-50"
+          className="underline uppercase cursor-pointer font-mono text-xs opacity-50"
           onClick={() => {
             setOpen(true);
           }}
