@@ -4,7 +4,7 @@ export const Header = () => {
   const router = useRouter();
 
   return (
-    <header>
+    <header className="bg-yellow-500/10 p-6 sm:p-8 sm:pb-6">
       <h1
         onClick={() => {
           router.replace("/");
@@ -14,12 +14,12 @@ export const Header = () => {
         Wikipedia Semantic Search
       </h1>
 
-      <h5 className="mt-1 text-sm italic opacity-60">
+      {/*<h5 className="mt-1 text-sm italic opacity-60">
         powered by{" "}
         <a href="https://upstash.com" className="underline">
           <b>Upstash Vector</b>
         </a>
-      </h5>
+      </h5>*/}
     </header>
   );
 };

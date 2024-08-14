@@ -16,12 +16,11 @@ export default function Page() {
   const [tab, setTab] = useState<"chat" | "search">("search");
 
   return (
-    <div className="max-w-screen-md px-4 min-h-screen flex flex-col sm:px-8 py-8 sm:py-12">
+    <div className="min-h-screen flex flex-col">
       <Header />
 
       <main className="grow">
         <Tabs
-          className="mt-6"
           value={tab}
           onValueChange={(value) => setTab(value as "chat" | "search")}
         >
@@ -30,12 +29,14 @@ export default function Page() {
             <TabsTrigger value="chat">Chat</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="search" className="pt-8">
-            <SearchTab />
-          </TabsContent>
-          <TabsContent value="chat" className="pt-8">
-            <ChatTab />
-          </TabsContent>
+          <div className="p-6 sm:p-8 max-w-screen-md">
+            <TabsContent value="search" className="">
+              <SearchTab />
+            </TabsContent>
+            <TabsContent value="chat">
+              <ChatTab />
+            </TabsContent>
+          </div>
         </Tabs>
       </main>
 

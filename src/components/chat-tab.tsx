@@ -76,8 +76,11 @@ export const ChatTab = () => {
 
   return (
     <>
-      <div className="sm:h-[calc(100vh-315px)] sm:min-h-[300px] bg-white flex flex-col gap-6 rounded-lg border border-yellow-500/20 p-6">
-        <div className="h-full overflow-scroll relative">
+      <div
+        className="h-[calc(100vh-200px)] min-h-[300px]
+      sm:h-[calc(100vh-260px)] sm:min-h-[300px] flex flex-col gap-6"
+      >
+        <div className="h-full overflow-scroll relative bg-yellow-500/10 p-6 rounded-lg">
           {messagesWithLoading.length === 0 && (
             <div className="text-center text-yellow-950/40 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               Chat with the wikipedia assistant
@@ -88,6 +91,7 @@ export const ChatTab = () => {
             {messagesWithLoading.map((message) => {
               // @ts-ignore
               const meta = message.metadata;
+
               return (
                 <ChatMessage role={message.role} key={message.id}>
                   {message.content}
@@ -96,11 +100,6 @@ export const ChatTab = () => {
             })}
           </div>
 
-          {/*<DebugDrawer metadata={meta}>*/}
-          {/*  <button className="text-yellow-950 hover:underline">*/}
-          {/*    debug*/}
-          {/*  </button>*/}
-          {/*</DebugDrawer>*/}
           {/* Scroll buffer */}
           <div className="h-[100px]" />
         </div>
@@ -112,7 +111,7 @@ export const ChatTab = () => {
             disabled={isLoading || isServerMessages}
             onChange={handleInputChange}
             placeholder="Ask a question..."
-            className="border border-yellow-950/20 rounded-md px-2 h-10 w-full"
+            className="border border-yellow-950/20 rounded-md px-4 h-10 w-full"
           />
           <LocaleSelect />
 
@@ -129,14 +128,17 @@ export const ChatTab = () => {
         )}
       </div>
 
-      <button
-        onClick={() => {
-          void serverClearMessages();
-          setMessages([]);
-        }}
-      >
-        Clear messages
-      </button>
+      <div className="mt-6">
+        <button
+          className="opacity-50 underline"
+          onClick={() => {
+            void serverClearMessages();
+            setMessages([]);
+          }}
+        >
+          Clear messages
+        </button>
+      </div>
     </>
   );
 };
