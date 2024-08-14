@@ -23,7 +23,13 @@ const TabsList = ({
 }: TabsListProps & {
   className?: string;
 }) => (
-  <TabsPrimitive.List className={cn("flex flex-col", className)} {...props} />
+  <TabsPrimitive.List
+    className={cn(
+      "flex gap-2 bg-yellow-500/10 pt-2 px-2 rounded-t-xl",
+      className,
+    )}
+    {...props}
+  />
 );
 
 const TabsTrigger = ({
@@ -33,7 +39,13 @@ const TabsTrigger = ({
   className?: string;
 }) => (
   <TabsPrimitive.Trigger
-    className={cn("flex flex-col", className)}
+    className={cn(
+      "h-10 px-4 rounded-t-lg opacity-50",
+      "data-[state=active]:font-bold",
+      "data-[state=active]:opacity-100",
+      "data-[state=active]:bg-yellow-50",
+      className,
+    )}
     {...props}
   />
 );
@@ -43,11 +55,6 @@ const TabsContent = ({
   ...props
 }: TabsContentProps & {
   className?: string;
-}) => (
-  <TabsPrimitive.Content
-    className={cn("flex flex-col", className)}
-    {...props}
-  />
-);
+}) => <TabsPrimitive.Content className={cn("grow", className)} {...props} />;
 
 export { Tabs, TabsList, TabsTrigger, TabsContent };

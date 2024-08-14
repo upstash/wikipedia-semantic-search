@@ -32,7 +32,7 @@ export default function Search({
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search..."
         disabled={isLoading}
-        className="grow w-full md:w-auto border border-zinc-300 px-2 h-10 rounded-lg"
+        className="grow w-full md:w-auto border border-zinc-300 px-4 h-10 rounded-lg"
       />
 
       <LocaleSelect />
@@ -40,8 +40,8 @@ export default function Search({
       <button
         type="submit"
         className={cn(
-          "px-4 h-10 bg-black text-white rounded-lg",
-          isLoading && "opacity-30"
+          "px-4 h-10 bg-yellow-950 text-white rounded-lg",
+          isLoading && "opacity-30",
         )}
         disabled={isLoading}
       >

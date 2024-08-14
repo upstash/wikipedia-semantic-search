@@ -63,7 +63,7 @@ const SelectContent = ({
       className="overflow-hidden bg-white rounded-md shadow-xl"
       {...props}
     >
-      <SelectPrimitive.ScrollUpButton className="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
+      <SelectPrimitive.ScrollUpButton className="flex items-center justify-center h-[25px] bg-white cursor-default">
         <ChevronUpIcon />
       </SelectPrimitive.ScrollUpButton>
       {/**/}
@@ -73,7 +73,7 @@ const SelectContent = ({
       </SelectPrimitive.Viewport>
 
       {/**/}
-      <SelectPrimitive.ScrollDownButton className="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
+      <SelectPrimitive.ScrollDownButton className="flex items-center justify-center h-[25px] bg-white cursor-default">
         <ChevronDownIcon />
       </SelectPrimitive.ScrollDownButton>
     </SelectPrimitive.Content>
@@ -90,10 +90,10 @@ const SelectItem = ({
   return (
     <SelectPrimitive.Item
       className={cn(
-        "leading-none flex items-center h-[25px] pr-6 pl-4 relative select-none",
+        "leading-none flex items-center h-8 pr-6 pl-4 rounded-md relative select-none",
         "data-[disabled]:opacity-50 data-[disabled]:pointer-events-none data-[highlighted]:outline-none",
-        "data-[highlighted]:bg-emerald-100",
-        "data-[state=checked]:bg-emerald-200",
+        "data-[highlighted]:bg-yellow-100",
+        "data-[state=checked]:bg-yellow-200",
         className,
       )}
       {...props}

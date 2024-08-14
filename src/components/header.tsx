@@ -1,10 +1,7 @@
-import { useFetchInfo } from "@/lib/use-fetch-info";
-import { formatter } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
 export const Header = () => {
   const router = useRouter();
-  const { data: info } = useFetchInfo();
 
   return (
     <header>
@@ -14,13 +11,15 @@ export const Header = () => {
         }}
         className="font-serif font-bold text-2xl md:text-3xl hover:underline cursor-pointer"
       >
-        Wikipedia Semantic Search by Upstash Vector
+        Wikipedia Semantic Search
       </h1>
-      <p className="mt-1 opacity-80">
-        Our database has{" "}
-        <b>{info ? formatter.format(info.vectorCount) : "..."} vectors</b> with{" "}
-        <b>{info?.dimension ?? "..."} dimensions</b>.
-      </p>
+
+      <h5 className="mt-1 text-sm italic opacity-60">
+        powered by{" "}
+        <a href="https://upstash.com" className="underline">
+          <b>Upstash Vector</b>
+        </a>
+      </h5>
     </header>
   );
 };

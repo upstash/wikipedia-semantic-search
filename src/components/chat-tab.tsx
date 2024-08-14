@@ -88,6 +88,7 @@ export const ChatTab = () => {
           Clear messages
         </button>
       </div>
+
       <div className="bg-amber-50 rounded-md border border-yellow-950/20 py-5 px-2">
         <div className="max-h-[calc(100vh-380px)] min-h-[300px] overflow-scroll">
           {messagesWithLoading.length === 0 && (
@@ -95,6 +96,7 @@ export const ChatTab = () => {
               Chat with the wikipedia assistant
             </div>
           )}
+
           <div className="flex flex-col gap-4">
             {messagesWithLoading.map((message) => {
               // @ts-ignore
@@ -137,6 +139,7 @@ export const ChatTab = () => {
           {/* Scroll buffer */}
           <div className="h-[100px]" />
         </div>
+
         <form onSubmit={handleSubmit} className="flex gap-2 mt-5">
           <input
             type="text"

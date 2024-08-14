@@ -28,13 +28,13 @@ export default function EmptyState({
 
   return (
     <>
-      <h3>{t("exampleTitle")}</h3>
+      <h3 className="opacity-80">{t("exampleTitle")}</h3>
 
       <ol className="mt-2 list-decimal grid gap-2 list-inside">
         <li>
           <a
             href=""
-            className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-xl"
+            className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-2xl"
             onClick={_onSearch}
           >
             {t("example1")}
@@ -43,7 +43,7 @@ export default function EmptyState({
         <li>
           <a
             href=""
-            className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-xl"
+            className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-2xl"
             onClick={_onSearch}
           >
             {t("example2")}
@@ -52,7 +52,7 @@ export default function EmptyState({
         <li>
           <a
             href=""
-            className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-xl"
+            className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-2xl"
             onClick={_onSearch}
           >
             {t("example3")}
