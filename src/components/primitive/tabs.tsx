@@ -40,7 +40,7 @@ const TabsTrigger = ({
 }) => (
   <TabsPrimitive.Trigger
     className={cn(
-      "h-10 px-4 rounded-t-lg opacity-50",
+      "h-10 px-4 rounded-t-lg opacity-70",
       "data-[state=active]:font-bold",
       "data-[state=active]:opacity-100",
       "data-[state=active]:bg-yellow-50",

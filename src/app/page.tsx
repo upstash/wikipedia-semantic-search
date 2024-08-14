@@ -16,7 +16,7 @@ export default function Page() {
   const [tab, setTab] = useState<"chat" | "search">("search");
 
   return (
-    <div className="max-w-screen-md px-4 min-h-screen flex flex-col md:px-8 py-8 md:py-12">
+    <div className="max-w-screen-md px-4 min-h-screen flex flex-col sm:px-8 py-8 sm:py-12">
       <Header />
 
       <main className="grow">

@@ -26,7 +26,7 @@ export default function List({ state }: { state: Result | undefined }) {
             key={movie.metadata?.id + index.toString()}
             className="border-t border-yellow-700/10 pt-5 mt-5 grid gap-1"
           >
-            <h3 className="font-serif font-semibold text-xl md:text-2xl">
+            <h3 className="font-serif font-semibold text-xl sm:text-2xl">
               <a
                 href={movie.metadata?.url}
                 target="_blank"

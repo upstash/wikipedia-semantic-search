@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import LocaleSelect from "@/components/locale-select";
-import { useFetchInfo } from "@/lib/use-fetch-info";
+import { PaperPlaneIcon } from "@radix-ui/react-icons";
 
 export default function Search({
   isLoading,
@@ -15,8 +15,6 @@ export default function Search({
   onChange: (value: string) => void;
   onSubmit: () => void;
 }) {
-  const { data: info } = useFetchInfo();
-
   return (
     <form
       onSubmit={(e) => {
@@ -30,9 +28,9 @@ export default function Search({
         name="query"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Search..."
+        placeholder="Ask a question..."
         disabled={isLoading}
-        className="grow w-full md:w-auto border border-zinc-300 px-4 h-10 rounded-lg"
+        className="grow w-full sm:w-auto border border-zinc-300 px-4 h-10 rounded-lg"
       />
 
       <LocaleSelect />
@@ -45,7 +43,7 @@ export default function Search({
         )}
         disabled={isLoading}
       >
-        Search
+        <PaperPlaneIcon />
       </button>
     </form>
   );

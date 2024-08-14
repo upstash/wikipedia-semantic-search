@@ -9,7 +9,7 @@ export const Header = () => {
         onClick={() => {
           router.replace("/");
         }}
-        className="font-serif font-bold text-2xl md:text-3xl hover:underline cursor-pointer"
+        className="font-serif font-bold text-2xl sm:text-3xl hover:underline cursor-pointer"
       >
         Wikipedia Semantic Search
       </h1>
