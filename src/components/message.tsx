@@ -37,7 +37,7 @@ const Message = ({
 
         {role === "assistant" && meta && (
           <div className="flex">
-            <DebugDrawer metadata={meta}>debug</DebugDrawer>
+            <DebugDrawer metadata={meta} />
           </div>
         )}
       </div>
