@@ -9,7 +9,7 @@ import { DebugDrawer } from "./debug-drawer";
 
 const LOADING_MSG_ID = "loading-msg";
 
-export const ChatTab = ({ active }: { active: boolean }) => {
+export const ChatTab = () => {
   const locale = useLocale();
 
   // These also contain metadata for debugging like the context used
@@ -75,7 +75,7 @@ export const ChatTab = ({ active }: { active: boolean }) => {
   ];
 
   return (
-    <div className={cn("max-w-screen-md flex-shrink-0", !active && "hidden")}>
+    <div className={cn("max-w-screen-md flex-shrink-0")}>
       <div className="mb-2 flex justify-end gap-2">
         <LocaleSelect />
         <button
@@ -106,7 +106,7 @@ export const ChatTab = ({ active }: { active: boolean }) => {
                     "flex",
                     message.role === "user"
                       ? "justify-end pl-5"
-                      : "justify pr-10"
+                      : "justify pr-10",
                   )}
                 >
                   <div>
@@ -115,7 +115,7 @@ export const ChatTab = ({ active }: { active: boolean }) => {
                         "px-3 py-2 rounded-md",
                         message.role === "user"
                           ? "bg-amber-300/30"
-                          : "bg-amber-500/30"
+                          : "bg-amber-500/30",
                       )}
                     >
                       {message.content}

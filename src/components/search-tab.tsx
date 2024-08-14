@@ -1,8 +1,8 @@
 import { serverQueryIndex } from "@/lib/actions";
 import { ResultCode } from "@/lib/types";
 import { useMutation } from "@tanstack/react-query";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import EmptyState from "./empty";
 import ErrorMessages from "./error";
 import List from "./list";
@@ -13,7 +13,7 @@ const emptyState = {
   code: ResultCode.Empty,
 };
 
-export const SearchTab = ({ active }: { active: boolean }) => {
+export const SearchTab = () => {
   const [search, setSearch] = useState<string>("");
   const [searchParam, setSearchParam] = useQuerySearchParam();
   const [isInitial, setIsInitial] = useState(true);
@@ -56,7 +56,7 @@ export const SearchTab = ({ active }: { active: boolean }) => {
   };
 
   return (
-    <div className={!active ? "hidden" : ""}>
+    <div>
       <Search
         value={search}
         onChange={setSearch}
@@ -106,10 +106,10 @@ const useQuerySearchParam = () => {
         router.push(
           `${pathname}?${new URLSearchParams({
             query: state,
-          })}`
+          })}`,
         );
     },
-    [searchParams]
+    [searchParams],
   );
 
   return [state, setState] as const;
