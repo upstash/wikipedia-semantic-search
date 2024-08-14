@@ -1,13 +1,13 @@
 "use server";
 
 import { z } from "zod";
-import { Info, ResultCode, WikiMetadata } from "@/lib/types";
-import { getUserLocale } from "@/service";
-import { index } from "./dbs";
 import { cookies } from "next/headers";
-import { ragChat } from "./rag-chat";
+import { getUserLocale } from "@/service";
 import { UpstashMessage } from "@upstash/rag-chat";
+import { Info, ResultCode, WikiMetadata } from "@/lib/types";
+import { index } from "./dbs";
 import { MessageMetadata } from "./message-meta";
+import { ragChat } from "./rag-chat";
 
 export async function serverGetMessages() {
   const sessionId = cookies().get("sessionId")?.value;
