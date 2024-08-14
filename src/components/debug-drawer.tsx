@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/primitive/dialog";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
 
 export const DebugDrawer = ({
   metadata,
@@ -70,13 +71,12 @@ export const DebugDrawer = ({
                         className="pb-2 mb-2 border-b border-b-yellow-500/10"
                         key={url + data}
                       >
-                        <a
-                          className="block underline"
-                          href={url}
-                          target="_blank"
-                        >
-                          <b>{decodeURI(url)}</b>
-                        </a>
+                        <h4>
+                          <a className="underline" href={url} target="_blank">
+                            <b>{decodeURI(url)}</b>
+                            <ExternalLinkIcon className="ml-1 inline-flex opacity-60" />
+                          </a>
+                        </h4>
                         <p>{data}</p>
                       </div>
                     ))}

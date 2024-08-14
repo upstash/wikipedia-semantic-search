@@ -2,6 +2,7 @@ import { Result } from "@/lib/types";
 import prettyMilliseconds from "pretty-ms";
 import { formatter } from "@/lib/utils";
 import { useFetchInfo } from "@/lib/use-fetch-info";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
 
 export default function List({ state }: { state: Result | undefined }) {
   const { data: info } = useFetchInfo();
@@ -12,7 +13,7 @@ export default function List({ state }: { state: Result | undefined }) {
 
   return (
     <>
-      <div className="bg-yellow-100 text-yellow-900 px-4 py-2 rounded-lg">
+      <div className="bg-yellow-500/20 text-yellow-900 px-4 py-2 rounded-lg">
         <p>
           Search has been completed in{" "}
           <b>{prettyMilliseconds(state?.ms ?? 0)}</b> over{" "}
@@ -33,14 +34,15 @@ export default function List({ state }: { state: Result | undefined }) {
                 className="decoration-yellow-300 underline hover:bg-yellow-300"
               >
                 {movie.metadata?.title}
+                <ExternalLinkIcon className="ml-1 inline-flex opacity-60" />
               </a>
             </h3>
 
             <p className="line-clamp-3 opacity-80">{movie.data}</p>
 
             <p className="flex">
-              <span className="text-sm px-2 text-zinc-600 border border-zinc-300 rounded bg-white">
-                Score: {movie.score}
+              <span className="text-xs px-2 py-0.5 uppercase rounded font-mono bg-yellow-600/10">
+                Score:<b>{movie.score}</b>
               </span>
             </p>
           </article>
