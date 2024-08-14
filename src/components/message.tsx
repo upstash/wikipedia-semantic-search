@@ -1,14 +1,17 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Message as MessageProps } from "ai/react";
+import { DebugDrawer } from "@/components/debug-drawer";
 
 const Message = ({
   role,
   children,
   className,
+  meta,
   ...props
 }: React.ComponentProps<"div"> & {
   role: MessageProps["role"];
+  meta?: any;
 }) => (
   <div
     className={cn(
@@ -27,15 +30,16 @@ const Message = ({
       <div
         className={cn(
           "rounded-lg",
-          role === "user" ? "px-3 py-2 bg-white" : "",
+          role === "user" ? "px-3 py-2 bg-yellow-500/20" : "",
         )}
       >
-        {children}
-        {/*<DebugDrawer metadata={meta}>*/}
-        {/*  <button className="text-yellow-950 hover:underline">*/}
-        {/*    debug*/}
-        {/*  </button>*/}
-        {/*</DebugDrawer>*/}
+        <div>{children}</div>
+
+        {role === "assistant" && meta && (
+          <div className="flex">
+            <DebugDrawer metadata={meta}>debug</DebugDrawer>
+          </div>
+        )}
       </div>
     </div>
   </div>

@@ -29,6 +29,7 @@ export const DebugDrawer = ({
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <div
+            className="underline cursor-pointer font-mono text-xs opacity-50"
             onClick={() => {
               setOpen(true);
             }}
@@ -36,6 +37,7 @@ export const DebugDrawer = ({
             {children}
           </div>
         </SheetTrigger>
+
         {isValid ? (
           <SheetContent
             closeable={false}

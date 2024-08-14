@@ -80,7 +80,7 @@ export const ChatTab = () => {
         className="h-[calc(100vh-200px)] min-h-[300px]
       sm:h-[calc(100vh-260px)] sm:min-h-[300px] flex flex-col gap-6"
       >
-        <div className="h-full overflow-scroll relative bg-yellow-500/10 p-6 rounded-lg">
+        <div className="h-full overflow-scroll relative border border-yellow-500/30 p-6 rounded-lg">
           {messagesWithLoading.length === 0 && (
             <div className="text-center text-yellow-950/40 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               Chat with the wikipedia assistant
@@ -93,7 +93,7 @@ export const ChatTab = () => {
               const meta = message.metadata;
 
               return (
-                <ChatMessage role={message.role} key={message.id}>
+                <ChatMessage meta={meta} role={message.role} key={message.id}>
                   {message.content}
                 </ChatMessage>
               );
