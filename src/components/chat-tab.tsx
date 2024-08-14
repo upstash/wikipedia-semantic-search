@@ -38,6 +38,8 @@ export const ChatTab = () => {
     },
   });
 
+  const hasMessages = messages.length > 0;
+
   useEffect(() => {
     // When a new metadata comes from the server
     // update the last message with it
@@ -78,30 +80,13 @@ export const ChatTab = () => {
 
   return (
     <>
-      <Info className="mb-4 sm:mb-6">
-        <p>Chat support is implemented with RAG-Chat SDK.</p>
-
-        <p>
-          <b>
-            👉 Check out{" "}
-            <a
-              className="underline"
-              href="https://github.com/upstash/rag-chat"
-              target="_blank"
-            >
-              the repo for more.
-            </a>
-          </b>
-        </p>
-      </Info>
-
       <div
         className="h-[calc(100vh-320px)] min-h-[300px]
-      sm:h-[calc(100vh-360px)] sm:min-h-[300px] flex flex-col gap-6 border p-4 sm:p-6 border-yellow-700/10 rounded-lg"
+      sm:h-[calc(100vh-400px)] sm:min-h-[300px] flex flex-col gap-6 border p-4 sm:p-6 border-yellow-700/20 rounded-lg"
       >
         <div className="h-full overflow-scroll relative">
-          {messagesWithLoading.length === 0 && (
-            <div className="text-center opacity-60 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          {!hasMessages && (
+            <div className="text-center opacity-50 text-sm absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               Chat with the wikipedia assistant
             </div>
           )}
@@ -123,7 +108,10 @@ export const ChatTab = () => {
           <div className="h-[100px]" />
         </div>
 
-        <form onSubmit={handleSubmit} className="flex gap-2 items-center">
+        <form
+          onSubmit={handleSubmit}
+          className="relative flex gap-2 items-center"
+        >
           <input
             type="text"
             value={input}
@@ -143,6 +131,18 @@ export const ChatTab = () => {
           >
             <PaperPlaneIcon />
           </button>
+
+          {hasMessages && (
+            <button
+              className="absolute text-xs bottom-full mb-1 left-0 opacity-50 underline"
+              onClick={() => {
+                void serverClearMessages();
+                setMessages([]);
+              }}
+            >
+              Clear messages
+            </button>
+          )}
         </form>
 
         {error && (
@@ -150,17 +150,22 @@ export const ChatTab = () => {
         )}
       </div>
 
-      <div className="mt-6">
-        <button
-          className="opacity-50 underline"
-          onClick={() => {
-            void serverClearMessages();
-            setMessages([]);
-          }}
-        >
-          Clear messages
-        </button>
-      </div>
+      <Info className="mt-4 sm:mt-6">
+        <p>Chat support is implemented with RAG-Chat SDK.</p>
+
+        <p>
+          <b>
+            👉 Check out{" "}
+            <a
+              className="underline"
+              href="https://github.com/upstash/rag-chat"
+              target="_blank"
+            >
+              the repo for more.
+            </a>
+          </b>
+        </p>
+      </Info>
     </>
   );
 };

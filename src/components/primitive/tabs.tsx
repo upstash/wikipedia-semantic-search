@@ -24,7 +24,7 @@ const TabsList = ({
   className?: string;
 }) => (
   <TabsPrimitive.List
-    className={cn("flex gap-2 bg-yellow-100 px-6", className)}
+    className={cn("flex gap-2 bg-yellow-100", className)}
     {...props}
   />
 );

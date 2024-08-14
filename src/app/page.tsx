@@ -16,7 +16,7 @@ export default function Page() {
   const [tab, setTab] = useState<"chat" | "search">("search");
 
   return (
-    <div className="min-h-screen">
+    <>
       <Header />
 
       <main>
@@ -43,6 +43,6 @@ export default function Page() {
           </TabsContent>
         </Tabs>
       </main>
-    </div>
+    </>
   );
 }
