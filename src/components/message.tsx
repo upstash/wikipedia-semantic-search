@@ -15,7 +15,7 @@ const Message = ({
 }) => (
   <div
     className={cn(
-      "flex",
+      "flex py-1",
       role === "user" ? "justify-end" : "justify",
       className,
     )}
@@ -30,7 +30,7 @@ const Message = ({
       <div
         className={cn(
           "rounded-lg",
-          role === "user" ? "px-2 sm:px-3 py-1 sm:py-2 bg-yellow-500/20" : "",
+          role === "user" ? "px-2 sm:px-3 py-1 sm:py-2 bg-yellow-100" : "",
         )}
       >
         <div>{children}</div>
