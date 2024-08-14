@@ -7,6 +7,7 @@ import LocaleSelect from "./locale-select";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import ChatMessage from "./message";
 import { cn } from "@/lib/utils";
+import { Info } from "@/components/info";
 
 const LOADING_MSG_ID = "loading-msg";
 
@@ -77,13 +78,30 @@ export const ChatTab = () => {
 
   return (
     <>
+      <Info className="mb-4 sm:mb-6">
+        <p>Chat support is implemented with RAG-Chat SDK.</p>
+
+        <p>
+          <b>
+            👉 Check out{" "}
+            <a
+              className="underline"
+              href="https://github.com/upstash/rag-chat"
+              target="_blank"
+            >
+              the repo for more.
+            </a>
+          </b>
+        </p>
+      </Info>
+
       <div
-        className="h-[calc(100vh-200px)] min-h-[300px]
-      sm:h-[calc(100vh-260px)] sm:min-h-[300px] flex flex-col gap-6"
+        className="h-[calc(100vh-320px)] min-h-[300px]
+      sm:h-[calc(100vh-360px)] sm:min-h-[300px] flex flex-col gap-6 border p-4 sm:p-6 border-yellow-700/10 rounded-lg"
       >
-        <div className="h-full overflow-scroll relative border border-yellow-500/30 p-6 rounded-lg">
+        <div className="h-full overflow-scroll relative">
           {messagesWithLoading.length === 0 && (
-            <div className="text-center text-yellow-950/40 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <div className="text-center opacity-60 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               Chat with the wikipedia assistant
             </div>
           )}
@@ -112,7 +130,7 @@ export const ChatTab = () => {
             disabled={isLoading || isServerMessages}
             onChange={handleInputChange}
             placeholder="Ask a question..."
-            className="border border-yellow-950/20 rounded-md px-4 h-10 w-full"
+            className="border placeholder:text-yellow-950/50 border-yellow-700/20 rounded-md px-4 h-10 w-full"
           />
           <LocaleSelect />
 

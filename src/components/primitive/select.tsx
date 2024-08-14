@@ -32,7 +32,7 @@ const SelectTrigger = ({
     className={cn(
       "inline-flex items-center justify-center gap-2",
       "px-2 leading-none h-10",
-      "border border-zinc-300 rounded-lg outline-none bg-white",
+      "border border-yellow-700/20 rounded-lg outline-none bg-white",
       className,
     )}
     {...props}

@@ -7,6 +7,9 @@ import EmptyState from "./empty";
 import ErrorMessages from "./error";
 import List from "./list";
 import Search from "./search";
+import { Info } from "@/components/info";
+import { useFetchInfo } from "@/lib/use-fetch-info";
+import { formatter } from "@/lib/utils";
 
 const emptyState = {
   data: [],
@@ -14,6 +17,8 @@ const emptyState = {
 };
 
 export const SearchTab = () => {
+  const { data: info } = useFetchInfo();
+
   const [search, setSearch] = useState<string>("");
   const [searchParam, setSearchParam] = useQuerySearchParam();
   const [isInitial, setIsInitial] = useState(true);
@@ -68,7 +73,7 @@ export const SearchTab = () => {
         <ErrorMessages state={state} />
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 grow">
         <EmptyState
           loading={isLoading}
           state={state}
@@ -88,6 +93,25 @@ export const SearchTab = () => {
           }}
         />
       </div>
+
+      <Info className="mt-16 sm:mt-24">
+        <p>
+          This project is an experiment to demonstrate the scalability of
+          Upstash Vector with large datasets. We vectorized{" "}
+          <b>23M Wikipedia articles</b> in <b>11 languages</b> and stored{" "}
+          <b>{info ? formatter.format(info.vectorCount) : "..."} vectors</b> in
+          a single Upstash Vector index.
+        </p>
+
+        <p>
+          <b>
+            👉 Check out our{" "}
+            <a className="underline" href="/">
+              blog post for more.
+            </a>
+          </b>
+        </p>
+      </Info>
     </div>
   );
 };

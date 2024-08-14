@@ -55,9 +55,9 @@ export const DebugDrawer = ({
                 <AccordionContent>
                   {metadata.usedHistory.map(({ role, content }, i) => {
                     return (
-                      <div key={i}>
-                        {role}, {content}
-                      </div>
+                      <pre key={i} className="whitespace-pre-wrap">
+                        <b>{role}</b>: {content}
+                      </pre>
                     );
                   })}
                 </AccordionContent>
@@ -77,7 +77,7 @@ export const DebugDrawer = ({
                             <ExternalLinkIcon className="ml-1 inline-flex opacity-60" />
                           </a>
                         </h4>
-                        <p>{data}</p>
+                        <p className="line-clamp-2 opacity-80">{data}</p>
                       </div>
                     ))}
                   </div>
