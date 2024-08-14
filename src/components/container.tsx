@@ -5,6 +5,9 @@ const Container = ({
   className,
   ...props
 }: React.ComponentProps<"div"> & {}) => (
-  <div className={cn("max-w-screen-md px-4 sm:px-6", className)} {...props} />
+  <div
+    className={cn("max-w-screen-md mx-auto px-4 sm:px-6", className)}
+    {...props}
+  />
 );
 export default Container;

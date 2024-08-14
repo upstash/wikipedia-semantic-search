@@ -24,19 +24,23 @@ export default function Page() {
           value={tab}
           onValueChange={(value) => setTab(value as "chat" | "search")}
         >
-          <TabsList>
-            <TabsTrigger value="search">Search</TabsTrigger>
-            <TabsTrigger value="chat">RAG Chat</TabsTrigger>
+          <TabsList className="block">
+            <Container>
+              <TabsTrigger value="search">Search</TabsTrigger>
+              <TabsTrigger value="chat">RAG Chat</TabsTrigger>
+            </Container>
           </TabsList>
 
-          <Container className="py-6 sm:py-8">
-            <TabsContent value="search" className="">
+          <TabsContent value="search" className="">
+            <Container className="py-6 sm:py-8">
               <SearchTab />
-            </TabsContent>
-            <TabsContent value="chat">
+            </Container>
+          </TabsContent>
+          <TabsContent value="chat">
+            <Container className="py-6 sm:py-8">
               <ChatTab />
-            </TabsContent>
-          </Container>
+            </Container>
+          </TabsContent>
         </Tabs>
       </main>
     </div>
