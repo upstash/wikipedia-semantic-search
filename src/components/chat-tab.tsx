@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import LocaleSelect from "./locale-select";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import ChatMessage from "./message";
+import { cn } from "@/lib/utils";
 
 const LOADING_MSG_ID = "loading-msg";
 
@@ -104,7 +105,7 @@ export const ChatTab = () => {
           <div className="h-[100px]" />
         </div>
 
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex gap-2 items-center">
           <input
             type="text"
             value={input}
@@ -117,7 +118,10 @@ export const ChatTab = () => {
 
           <button
             type="submit"
-            className="px-4 h-10 bg-yellow-950 text-white rounded-lg"
+            className={cn(
+              "px-4 h-10 bg-yellow-950 text-white rounded-lg",
+              isLoading && "opacity-30",
+            )}
           >
             <PaperPlaneIcon />
           </button>

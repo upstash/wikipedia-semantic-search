@@ -21,7 +21,7 @@ export default function Search({
         e.preventDefault();
         onSubmit();
       }}
-      className="flex flex-wrap gap-2 items-center"
+      className="flex gap-2 items-center"
     >
       <input
         type="search"
@@ -30,7 +30,7 @@ export default function Search({
         onChange={(e) => onChange(e.target.value)}
         placeholder="Ask a question..."
         disabled={isLoading}
-        className="grow w-full sm:w-auto border border-zinc-300 px-4 h-10 rounded-lg"
+        className="border border-yellow-950/20 rounded-md px-4 h-10 w-full"
       />
 
       <LocaleSelect />

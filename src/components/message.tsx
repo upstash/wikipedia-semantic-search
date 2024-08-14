@@ -24,13 +24,13 @@ const Message = ({
     <div
       className={cn(
         " flex",
-        role === "user" ? "w-2/3 justify-end" : "w-5/6 justify",
+        role === "user" ? "sm:w-2/3 justify-end" : "sm:w-5/6 justify",
       )}
     >
       <div
         className={cn(
           "rounded-lg",
-          role === "user" ? "px-3 py-2 bg-yellow-500/20" : "",
+          role === "user" ? "px-2 sm:px-3 py-1 sm:py-2 bg-yellow-500/20" : "",
         )}
       >
         <div>{children}</div>
