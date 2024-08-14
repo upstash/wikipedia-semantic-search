@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
         meta = this.metadata;
         return context;
       },
-      topK: 100,
+      topK: 50,
       metadata: {
         usedPrompt: "<PROMPT_USED>",
       } as MessageMetadata,
