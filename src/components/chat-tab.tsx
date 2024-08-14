@@ -13,17 +13,15 @@ export const ChatTab = ({ active }: { active: boolean }) => {
   const locale = useLocale();
 
   // These also contain metadata for debugging like the context used
-  const {
-    data: serverMessages,
-    isLoading: isServerMessages,
-    refetch,
-  } = useQuery({
+  const { data: messageHistory, isLoading: isServerMessages } = useQuery({
     queryKey: ["messages"],
     queryFn: async () => {
       return await serverGetMessages();
     },
   });
+
   const {
+    data,
     messages,
     setMessages,
     handleInputChange,
@@ -36,16 +34,32 @@ export const ChatTab = ({ active }: { active: boolean }) => {
     body: {
       namespace: locale,
     },
-    onResponse: () => {
-      void refetch();
-    },
   });
 
   useEffect(() => {
-    if (serverMessages) {
-      setMessages(serverMessages);
+    // When a new metadata comes from the server
+    // update the last message with it
+    setMessages((messages) => {
+      const meta = data?.at(-1);
+      if (!meta) return messages;
+      const last = messages.at(-1);
+      if (!last) return messages;
+      return [
+        ...messages.slice(0, -1),
+        {
+          ...last,
+          metadata: meta,
+        },
+      ];
+    });
+  }, [data]);
+
+  // Only called once
+  useEffect(() => {
+    if (messageHistory) {
+      setMessages(messageHistory);
     }
-  }, [serverMessages]);
+  }, [messageHistory]);
 
   const messagesWithLoading: Message[] = [
     ...messages,
@@ -82,10 +96,9 @@ export const ChatTab = ({ active }: { active: boolean }) => {
             </div>
           )}
           <div className="flex flex-col gap-4">
-            {messagesWithLoading.map((message, i) => {
-              const meta = serverMessages?.find(
-                (msg) => msg.id === message.id
-              )?.metadata;
+            {messagesWithLoading.map((message) => {
+              // @ts-ignore
+              const meta = message.metadata;
               return (
                 <div
                   key={message.id}

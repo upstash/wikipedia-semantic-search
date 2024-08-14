@@ -2,7 +2,7 @@ import { serverQueryIndex } from "@/lib/actions";
 import { ResultCode } from "@/lib/types";
 import { useMutation } from "@tanstack/react-query";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import EmptyState from "./empty";
 import ErrorMessages from "./error";
 import List from "./list";
@@ -25,6 +25,22 @@ export const SearchTab = ({ active }: { active: boolean }) => {
   } = useMutation({
     mutationFn: async (query: string) => await serverQueryIndex(query),
   });
+
+  const groupedData = useMemo(() => {
+    const results = data?.data;
+    if (!results) return [];
+
+    // Group by url
+    const map = new Map<string, (typeof results)[number]>();
+    for (const result of results) {
+      if (!result.metadata?.url || map.has(result.metadata.url)) continue;
+
+      map.set(result.metadata?.url, result);
+    }
+
+    return Array.from(map.values()).sort((a, b) => b.score - a.score);
+  }, [data]);
+
   const state = data ?? emptyState;
 
   useEffect(() => {
@@ -65,7 +81,12 @@ export const SearchTab = ({ active }: { active: boolean }) => {
       </div>
 
       <div className="mt-8">
-        <List state={state} />
+        <List
+          state={{
+            ...state,
+            data: groupedData,
+          }}
+        />
       </div>
     </div>
   );

@@ -17,13 +17,14 @@ export async function POST(request: NextRequest) {
 
     if (!sessionId) throw new Error("No sessionId found");
 
+    let meta: undefined | MessageMetadata = undefined;
+
     const response = await ragChat.chat(question, {
       streaming: true,
       sessionId: sessionId,
       namespace: namespace,
-
       onChatHistoryFetched(messages) {
-        // Inject the history to metadata
+        // inject the history to metadata
         this.metadata = {
           ...this.metadata,
           usedHistory: messages.map(({ role, content }) => ({
@@ -31,10 +32,14 @@ export async function POST(request: NextRequest) {
             content,
           })),
         };
+        meta = this.metadata;
         return messages;
       },
       onContextFetched(context) {
-        // Inject the context to metadata
+        // only the top 5 results
+        context = context.slice(0, 5);
+
+        // inject the context to metadata
         this.metadata = {
           ...this.metadata,
           usedContext: context.map((x) => ({
@@ -42,14 +47,18 @@ export async function POST(request: NextRequest) {
             data: x.data,
           })),
         };
+        meta = this.metadata;
         return context;
       },
+      topK: 100,
       metadata: {
         usedPrompt: "<PROMPT_USED>",
       } as MessageMetadata,
     });
 
-    return aiUseChatAdapter(response);
+    // send meta along the response, this is consumed in the client
+    // with the data field of useChat
+    return aiUseChatAdapter(response, meta);
   } catch (error) {
     return Response.json("Server error", {
       status: 500,

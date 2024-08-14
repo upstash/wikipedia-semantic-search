@@ -7,7 +7,7 @@ import { index } from "./dbs";
 import { cookies } from "next/headers";
 import { ragChat } from "./rag-chat";
 import { UpstashMessage } from "@upstash/rag-chat";
-import { MessageMetadata } from "@/app/api/chat-stream/route";
+import { MessageMetadata } from "./message-meta";
 
 export async function serverGetMessages() {
   const sessionId = cookies().get("sessionId")?.value;
