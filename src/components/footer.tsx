@@ -6,7 +6,7 @@ export const Footer = () => {
 
   return (
     <footer className="p-6 sm:p-8 max-w-screen-md">
-      <div className="text-emerald-900 rounded-lg border border-emerald-200 text-sm grid gap-4 bg-emerald-50 p-6">
+      <div className="text-emerald-900 rounded-lg border border-emerald-200 grid gap-4 bg-emerald-50 p-6">
         <p>
           This project is an experiment to demonstrate the scalability of
           Upstash Vector with large datasets. We vectorized{" "}

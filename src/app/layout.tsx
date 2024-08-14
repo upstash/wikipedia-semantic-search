@@ -44,7 +44,7 @@ export default async function RootLayout({
       lang={locale}
       className={`${serif.variable} ${sans.variable} font-sans`}
     >
-      <body className="antialiased text-sm sm:text-base text-yellow-950 min-h-screen from-yellow-50 bg-gradient-to-b">
+      <body className="antialiased text-sm sm:text-base text-yellow-950 min-h-screen bg-white">
         <Providers>
           <NextIntlClientProvider messages={messages}>
             {children}

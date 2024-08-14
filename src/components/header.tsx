@@ -4,7 +4,7 @@ export const Header = () => {
   const router = useRouter();
 
   return (
-    <header className="bg-yellow-500/10 p-6 sm:p-8 sm:pb-6">
+    <header className="bg-yellow-100 p-6 sm:p-8 sm:pb-6">
       <h1
         onClick={() => {
           router.replace("/");

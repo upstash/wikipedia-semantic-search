@@ -93,8 +93,8 @@ const SelectItem = ({
         "leading-none flex items-center h-8 pr-6 pl-4 rounded-md relative select-none",
         "data-[disabled]:opacity-50 data-[disabled]:pointer-events-none data-[highlighted]:outline-none",
         "cursor-pointer",
-        "data-[highlighted]:bg-yellow-100",
-        "data-[state=checked]:bg-yellow-200",
+        "data-[highlighted]:bg-yellow-50",
+        "data-[state=checked]:bg-yellow-100",
         className,
       )}
       {...props}

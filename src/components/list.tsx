@@ -13,7 +13,7 @@ export default function List({ state }: { state: Result | undefined }) {
 
   return (
     <>
-      <div className="bg-yellow-500/20 text-yellow-900 px-4 py-2 rounded-lg">
+      <div className="bg-emerald-50 text-emerald-900 px-4 py-2 rounded-lg">
         <p>
           Search has been completed in{" "}
           <b>{prettyMilliseconds(state?.ms ?? 0)}</b> over{" "}
@@ -31,7 +31,7 @@ export default function List({ state }: { state: Result | undefined }) {
               <a
                 href={movie.metadata?.url}
                 target="_blank"
-                className="decoration-yellow-300 underline hover:bg-yellow-300"
+                className="decoration-yellow-300 underline hover:bg-yellow-100"
               >
                 {movie.metadata?.title}
                 <ExternalLinkIcon className="ml-1 inline-flex opacity-60" />
@@ -41,7 +41,7 @@ export default function List({ state }: { state: Result | undefined }) {
             <p className="line-clamp-3 opacity-80">{movie.data}</p>
 
             <p className="flex">
-              <span className="text-xs px-2 py-0.5 uppercase rounded font-mono bg-yellow-600/10">
+              <span className="text-xs px-2 py-0.5 uppercase rounded font-mono bg-yellow-700/10">
                 Score:<b>{movie.score}</b>
               </span>
             </p>

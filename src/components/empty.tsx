@@ -34,7 +34,7 @@ export default function EmptyState({
         <li>
           <a
             href=""
-            className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-2xl"
+            className="font-serif font-bold hover:bg-yellow-100 decoration-yellow-300 underline text-2xl"
             onClick={_onSearch}
           >
             {t("example1")}
@@ -43,7 +43,7 @@ export default function EmptyState({
         <li>
           <a
             href=""
-            className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-2xl"
+            className="font-serif font-bold hover:bg-yellow-100 decoration-yellow-300 underline text-2xl"
             onClick={_onSearch}
           >
             {t("example2")}
@@ -52,7 +52,7 @@ export default function EmptyState({
         <li>
           <a
             href=""
-            className="font-serif font-bold hover:bg-yellow-300 decoration-yellow-300 underline text-2xl"
+            className="font-serif font-bold hover:bg-yellow-100 decoration-yellow-300 underline text-2xl"
             onClick={_onSearch}
           >
             {t("example3")}

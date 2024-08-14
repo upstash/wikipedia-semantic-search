@@ -68,7 +68,7 @@ export const DebugDrawer = ({
                   <div className="grid">
                     {metadata?.usedContext.map(({ url, data }) => (
                       <div
-                        className="pb-2 mb-2 border-b border-b-yellow-500/10"
+                        className="pb-2 mb-2 border-b border-b-yellow-500/5"
                         key={url + data}
                       >
                         <h4>
