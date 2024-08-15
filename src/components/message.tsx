@@ -33,7 +33,7 @@ const Message = ({
           role === "user" ? "px-2 sm:px-3 py-1 sm:py-2 bg-yellow-100" : "",
         )}
       >
-        <div>{children}</div>
+        <div className="whitespace-pre-wrap">{children}</div>
 
         {role === "assistant" && meta && (
           <div className="flex">
