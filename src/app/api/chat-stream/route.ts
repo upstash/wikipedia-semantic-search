@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     const question = (messages as Message[]).at(-1)?.content;
     if (!question) throw new Error("No question in the request");
 
-    const sessionId = request.cookies.get("sessionId")?.value;
+    const sessionId = "test-session";
 
     if (!sessionId) throw new Error("No sessionId found");
 

@@ -10,7 +10,7 @@ import { MessageMetadata } from "./message-meta";
 import { ragChat } from "./rag-chat";
 
 export async function serverGetMessages() {
-  const sessionId = cookies().get("sessionId")?.value;
+  const sessionId = "test-session";
 
   if (!sessionId) throw new Error("No sessionId found");
 
@@ -23,7 +23,7 @@ export async function serverGetMessages() {
 }
 
 export async function serverClearMessages() {
-  const sessionId = cookies().get("sessionId")?.value;
+  const sessionId = "test-session";
 
   if (!sessionId) throw new Error("No sessionId found");
 
