@@ -5,7 +5,7 @@ export const ragChat = new RAGChat({
   model: upstash("meta-llama/Meta-Llama-3-8B-Instruct"),
   vector: index,
   redis: redis,
-  debug: true,
+  debug: false,
   promptFn: ({ chatHistory, context, question }) => {
     return PROMPT.replace("{chatHistory}", chatHistory ?? "<NO_CHAT_HISTORY>")
       .replace("{context}", context)
