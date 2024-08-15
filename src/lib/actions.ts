@@ -7,7 +7,7 @@ import { UpstashMessage } from "@upstash/rag-chat";
 import { Info, ResultCode, WikiMetadata } from "@/lib/types";
 import { index } from "./dbs";
 import { MessageMetadata } from "./message-meta";
-import { ragChat } from "./rag-chat";
+import { getSessionIdKey, ragChat } from "./rag-chat";
 
 export async function serverGetMessages() {
   const sessionId = cookies().get("sessionId")?.value;
@@ -15,7 +15,7 @@ export async function serverGetMessages() {
   if (!sessionId) throw new Error("No sessionId found");
 
   const messages = (await ragChat.history.getMessages({
-    sessionId: sessionId,
+    sessionId: getSessionIdKey(sessionId),
     amount: 10,
   })) as UpstashMessage<MessageMetadata>[];
 
@@ -27,7 +27,9 @@ export async function serverClearMessages() {
 
   if (!sessionId) throw new Error("No sessionId found");
 
-  await ragChat.history.deleteMessages({ sessionId });
+  await ragChat.history.deleteMessages({
+    sessionId: getSessionIdKey(sessionId),
+  });
 }
 
 export async function serverQueryIndex(query: string) {

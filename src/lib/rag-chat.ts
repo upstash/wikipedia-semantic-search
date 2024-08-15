@@ -2,6 +2,8 @@ import { RAGChat, upstash } from "@upstash/rag-chat";
 import { index, redis } from "./dbs";
 import { Ratelimit } from "@upstash/ratelimit";
 
+export const getSessionIdKey = (id: string) => `session:${id}`;
+
 export const ragChat = new RAGChat({
   model: upstash("meta-llama/Meta-Llama-3-8B-Instruct"),
   vector: index,

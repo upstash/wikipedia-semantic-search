@@ -1,7 +1,7 @@
 import type { Message } from "ai";
 import { NextRequest } from "next/server";
 import { MessageMetadata } from "@/lib/message-meta";
-import { PROMPT, ragChat } from "@/lib/rag-chat";
+import { getSessionIdKey, PROMPT, ragChat } from "@/lib/rag-chat";
 import { aiUseChatAdapter } from "@upstash/rag-chat/nextjs";
 import { RatelimitUpstashError } from "@upstash/rag-chat";
 
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     const response = await ragChat.chat(question, {
       streaming: true,
-      sessionId: sessionId,
+      sessionId: getSessionIdKey(sessionId),
       namespace: namespace,
       onChatHistoryFetched(messages) {
         // inject the history to metadata
