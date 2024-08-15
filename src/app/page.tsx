@@ -27,7 +27,7 @@ export default function Page() {
           <TabsList className="block">
             <Container>
               <TabsTrigger value="search">Search</TabsTrigger>
-              <TabsTrigger value="chat">RAG Chat</TabsTrigger>
+              <TabsTrigger value="chat">Chat to Wikipedia</TabsTrigger>
             </Container>
           </TabsList>
 
