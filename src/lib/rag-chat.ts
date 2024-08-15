@@ -15,6 +15,7 @@ export const ragChat = new RAGChat({
   ratelimit: new Ratelimit({
     redis: redis,
     limiter: Ratelimit.slidingWindow(100, "10m"),
+    cacheScripts: false,
   }),
 });
 
