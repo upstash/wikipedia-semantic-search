@@ -36,6 +36,7 @@ export default function LocaleSelect() {
           ? []
           : Object.keys(info.namespaces)
               .filter((key) => info.namespaces[key].vectorCount > 0)
+              .sort()
               .map((key) => (
                 <SelectItem key={key} value={key}>
                   {key.toLocaleUpperCase("en")}
