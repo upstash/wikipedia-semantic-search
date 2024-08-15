@@ -18,7 +18,7 @@ export default function ErrorMessages({
     return (
       <div className="text-red-600">
         <h3>
-          Please enter at least 2 characters to start searching for movies.
+          Please enter at least 2 characters to start searching wikipedia.
         </h3>
       </div>
     );
