@@ -8,6 +8,7 @@ import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import ChatMessage from "./message";
 import { cn } from "@/lib/utils";
 import { Info } from "@/components/info";
+import { MarkdownRenderer } from "./markdown-renderer";
 
 const LOADING_MSG_ID = "loading-msg";
 
@@ -98,7 +99,7 @@ export const ChatTab = () => {
 
               return (
                 <ChatMessage meta={meta} role={message.role} key={message.id}>
-                  {message.content}
+                    <MarkdownRenderer>{message.content}</MarkdownRenderer>
                 </ChatMessage>
               );
             })}
