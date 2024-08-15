@@ -23,10 +23,12 @@ export async function POST(request: NextRequest) {
       streaming: true,
       sessionId: sessionId,
       namespace: namespace,
-      onChatHistoryFetched(messages) {
+      onChatHistoryFetched(messages: any) {
         // inject the history to metadata
+        // @ts-ignore
         this.metadata = {
           ...this.metadata,
+          // @ts-ignore
           usedHistory: messages.map(({ role, content }) => ({
             role,
             content,
@@ -35,14 +37,15 @@ export async function POST(request: NextRequest) {
         meta = this.metadata;
         return messages;
       },
-      onContextFetched(context) {
+      onContextFetched(context: any) {
         // only the top 5 results
         context = context.slice(0, 5);
 
         // inject the context to metadata
+        // @ts-ignore
         this.metadata = {
           ...this.metadata,
-          usedContext: context.map((x) => ({
+          usedContext: context.map((x: any) => ({
             url: (x.metadata as { url: string | undefined }).url ?? "NO_URL",
             data: x.data,
           })),
@@ -58,6 +61,7 @@ export async function POST(request: NextRequest) {
 
     // send meta along the response, this is consumed in the client
     // with the data field of useChat
+    // @ts-ignore
     return aiUseChatAdapter(response, meta);
   } catch (error) {
     return Response.json("Server error", {
