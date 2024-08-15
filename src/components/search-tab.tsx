@@ -106,7 +106,7 @@ export const SearchTab = () => {
         <p>
           <b>
             👉 Check out our{" "}
-            <a className="underline" href="/">
+            <a className="underline" target="_blank" href="https://upstash.com/blog/indexing-wikipedia">
               blog post for more.
             </a>
           </b>
