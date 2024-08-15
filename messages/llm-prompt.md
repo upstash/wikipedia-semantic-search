@@ -16,8 +16,8 @@ Translate this json data to the languages listed above.
 
 Json data:
 {
-    "exampleTitle": "Example questions",
-    "example1": "Longest river in the world",
-    "example2": "Books by stephen king",
-    "example3": "Who invented the airplane?"
+"exampleTitle": "Example questions",
+"example1": "Longest river in the world",
+"example2": "Books by Stephen King",
+"example3": "Who invented the airplane?"
 }
