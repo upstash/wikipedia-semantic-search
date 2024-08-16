@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { cookies } from "next/headers";
 import { getUserLocale } from "@/service";
-import { upstash, UpstashMessage } from "@upstash/rag-chat";
+import { openai, UpstashMessage } from "@upstash/rag-chat";
 import { Info, ResultCode, WikiMetadata } from "@/lib/types";
 import { index } from "./dbs";
 import { MessageMetadata } from "./message-meta";
@@ -35,7 +35,8 @@ const capitalizeWord = (word: string) => {
 };
 
 async function getKeywords(query: string) {
-  const resp = await upstash("meta-llama/Meta-Llama-3-8B-Instruct").invoke(`
+  // const resp = await upstash("meta-llama/Meta-Llama-3-8B-Instruct").invoke(`
+  const resp = await openai("gpt-4o").invoke(`
     Please provide a list of keywords about the question given in JSON format.
     Don't answer with anything else.
 
@@ -54,8 +55,12 @@ async function getKeywords(query: string) {
   console.log(resp);
 
   try {
+    const text = resp.content as string;
+
     // @ts-ignore
-    return JSON.parse(resp.content) as string[];
+    return JSON.parse(
+      text.replaceAll("```", "").replaceAll("json", "").trim(),
+    ) as string[];
   } catch (error) {
     console.error("Error parsing keywords, prompt:", resp.content);
     return undefined;
@@ -89,7 +94,7 @@ export async function serverQueryIndex(query: string) {
 
     const q = {
       data: query as string,
-      topK: 100,
+      topK: 1000,
       includeData: true,
       includeVectors: false,
       includeMetadata: true,
