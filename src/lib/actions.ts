@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { cookies } from "next/headers";
 import { getUserLocale } from "@/service";
-import { UpstashMessage } from "@upstash/rag-chat";
+import { upstash, UpstashMessage } from "@upstash/rag-chat";
 import { Info, ResultCode, WikiMetadata } from "@/lib/types";
 import { index } from "./dbs";
 import { MessageMetadata } from "./message-meta";
@@ -30,8 +30,46 @@ export async function serverClearMessages() {
   await ragChat.history.deleteMessages({ sessionId });
 }
 
+const capitalizeWord = (word: string) => {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+};
+
+async function getKeywords(query: string) {
+  const resp = await upstash("meta-llama/Meta-Llama-3-8B-Instruct").invoke(`
+    Please provide a list of keywords about the question given in JSON format.
+    Don't answer with anything else.
+
+    EXAMPLE INPUT:
+    Ghandi
+
+    EXAMPLE OUTPUT:
+    ["Ghandi", "India", "peace", "leader", "non-violence", "freedom"]
+
+    INPUT:
+    ${query.split(" ").map(capitalizeWord).join(" ")}
+
+    OUTPUT:
+    `);
+
+  console.log(resp);
+
+  try {
+    // @ts-ignore
+    return JSON.parse(resp.content) as string[];
+  } catch (error) {
+    console.error("Error parsing keywords, prompt:", resp.content);
+    return undefined;
+  }
+}
+
 export async function serverQueryIndex(query: string) {
   try {
+    const keywords = await getKeywords(query);
+    console.log("query: ", query, "keywords: ", keywords);
+
+    if (keywords && keywords.length > 0)
+      query = query + " " + keywords.join(" ");
+
     const namespace = await getUserLocale();
     const parsedCredentials = z
       .object({
