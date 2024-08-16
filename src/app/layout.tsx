@@ -4,6 +4,7 @@ import { EB_Garamond, Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { Providers } from "./providers";
+import { Header } from "@/components/header";
 
 export const metadata: Metadata = {
   title: "Wikipedia Semantic Search by Upstash Vector",
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-	maximumScale: 1, // Disable auto-zoom on mobile Safari
+  maximumScale: 1, // Disable auto-zoom on mobile Safari
 };
 
 const serif = EB_Garamond({
@@ -51,6 +52,7 @@ export default async function RootLayout({
       <body className="antialiased text-sm sm:text-base text-yellow-950 min-h-screen bg-white">
         <Providers>
           <NextIntlClientProvider messages={messages}>
+            <Header />
             {children}
           </NextIntlClientProvider>
         </Providers>
