@@ -1,8 +1,9 @@
 import type { Message } from "ai";
 import { NextRequest } from "next/server";
 import { MessageMetadata } from "@/lib/message-meta";
-import { PROMPT, ragChat } from "@/lib/rag-chat";
+import { getSessionIdKey, PROMPT, ragChat } from "@/lib/rag-chat";
 import { aiUseChatAdapter } from "@upstash/rag-chat/nextjs";
+import { RatelimitUpstashError } from "@upstash/rag-chat";
 
 export const maxDuration = 30;
 
@@ -21,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     const response = await ragChat.chat(question, {
       streaming: true,
-      sessionId: sessionId,
+      sessionId: getSessionIdKey(sessionId),
       namespace: namespace,
       onChatHistoryFetched(messages) {
         // inject the history to metadata
@@ -54,12 +55,18 @@ export async function POST(request: NextRequest) {
       metadata: {
         usedPrompt: PROMPT,
       } as MessageMetadata,
+      ratelimitSessionId: request.ip,
     });
 
     // send meta along the response, this is consumed in the client
     // with the data field of useChat
     return aiUseChatAdapter(response, meta);
   } catch (error) {
+    console.error(error);
+    if (error instanceof RatelimitUpstashError)
+      return Response.json("Rate limited", {
+        status: 429,
+      });
     return Response.json("Server error", {
       status: 500,
     });

@@ -1,5 +1,8 @@
 import { RAGChat, upstash } from "@upstash/rag-chat";
 import { index, redis } from "./dbs";
+import { Ratelimit } from "@upstash/ratelimit";
+
+export const getSessionIdKey = (id: string) => `session:${id}`;
 
 export const ragChat = new RAGChat({
   model: upstash("meta-llama/Meta-Llama-3-8B-Instruct"),
@@ -11,6 +14,11 @@ export const ragChat = new RAGChat({
       .replace("{context}", context)
       .replace("{question}", question);
   },
+  ratelimit: new Ratelimit({
+    redis: redis,
+    limiter: Ratelimit.slidingWindow(100, "10m"),
+    cacheScripts: false,
+  }),
 });
 
 export const PROMPT = `You are a friendly AI assistant augmented with an Upstash Vector Store that contains embeddings from wikipedia.
