@@ -35,7 +35,12 @@ const capitalizeWord = (word: string) => {
 };
 
 async function getKeywords(query: string) {
-  const resp = await upstash("meta-llama/Meta-Llama-3-8B-Instruct").invoke(`
+  const resp = await upstash("meta-llama/Meta-Llama-3-8B-Instruct", {
+    analytics: {
+      name: "helicone",
+      token: process.env.HELICONE_TOKEN!,
+    },
+  }).invoke(`
     Please provide a list of keywords about the question given in JSON format.
     Don't answer with anything else.
 

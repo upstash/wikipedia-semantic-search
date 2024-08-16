@@ -2,7 +2,12 @@ import { RAGChat, upstash } from "@upstash/rag-chat";
 import { index, redis } from "./dbs";
 
 export const ragChat = new RAGChat({
-  model: upstash("meta-llama/Meta-Llama-3-8B-Instruct"),
+  model: upstash("meta-llama/Meta-Llama-3-8B-Instruct", {
+    analytics: {
+      name: "helicone",
+      token: process.env.HELICONE_TOKEN!,
+    },
+  }),
   vector: index,
   redis: redis,
   debug: false,
