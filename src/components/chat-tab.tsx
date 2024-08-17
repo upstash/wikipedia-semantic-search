@@ -99,7 +99,7 @@ export const ChatTab = () => {
 
               return (
                 <ChatMessage meta={meta} role={message.role} key={message.id}>
-                    <MarkdownRenderer>{message.content}</MarkdownRenderer>
+                  <MarkdownRenderer>{message.content}</MarkdownRenderer>
                 </ChatMessage>
               );
             })}
