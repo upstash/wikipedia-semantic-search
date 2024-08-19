@@ -105,14 +105,23 @@ export const SearchTab = () => {
 
         <p>
           <b>
-            👉 Check out our{" "}
+            👉 Check out the{" "}
+            <a
+              className="underline"
+              target="_blank"
+              href="https://github.com/upstash/wikipedia-semantic-search"
+            >
+              github repo
+            </a>{" "}
+            or the{" "}
             <a
               className="underline"
               target="_blank"
               href="https://upstash.com/blog/indexing-wikipedia"
             >
-              blog post for more.
-            </a>
+              blog post
+            </a>{" "}
+            for more.
           </b>
         </p>
       </Info>

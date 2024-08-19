@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Indexing Millions of Wikipedia Articles With Upstash Vector
 
-## Getting Started
+This repository contains the code and documentation for our project on indexing millions of Wikipedia articles using Upstash Vector, as described in our [blog post](https://upstash.com/blog/indexing-wikipedia).
 
-First, run the development server:
+## Project Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+We've created a semantic search engine and [Upstash RAG Chat SDK](https://github.com/upstash/rag-chat) using Wikipedia data to demonstrate the capabilities of Upstash Vector and RAG Chat SDK. The project involves:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Preparing and embedding Wikipedia articles
+2. Indexing the vectors using Upstash Vector
+3. Building a Wikipedia semantic search engine
+4. Implementing a RAG chatbot
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Key Features
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Indexed over 144 million vectors from Wikipedia articles in 11 languages
+- Used BGE-M3 embedding model for multilingual support
+- Implemented semantic search with cross-lingual capabilities
+- Created a RAG chatbot using Upstash RAG Chat SDK
 
-## Learn More
+## Technologies Used
 
-To learn more about Next.js, take a look at the following resources:
+- [Upstash Vector](https://upstash.com/docs/vector/overall/getstarted): For storing and querying vector embeddings
+- [Upstash Redis](https://upstash.com/redis): For storing chat sessions
+- [Upstash RAG Chat SDK](https://github.com/upstash/rag-chat): For building the RAG Chat application
+- [SentenceTransformers](https://www.sbert.net/): For generating embeddings
+- [Meta-Llama-3-8B-Instruct](https://ai.meta.com/blog/llama-3-available/): As the LLM provider through [QStash LLM APIs](https://upstash.com/docs/qstash/features/llm)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+We welcome contributions to improve this project. Please feel free to submit issues or pull requests.
 
-## Deploy on Vercel
+## Acknowledgements
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Wikipedia for providing the dataset
+- Upstash for their vector database and RAG Chat SDK
+- All contributors to the open-source libraries used in this project
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Contact
+
+For any questions or feedback about the project or Upstash Vector, please reach out to us at (add contact information).
+
+Check out our [live demo](https://wikipedia-semantic-search.vercel.app/) to see the project in action!
