@@ -2,7 +2,7 @@ import { serverClearMessages, serverGetMessages } from "@/lib/actions";
 import { useQuery } from "@tanstack/react-query";
 import { Message, useChat } from "ai/react";
 import { useLocale } from "next-intl";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import LocaleSelect from "./locale-select";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import ChatMessage from "./message";
@@ -14,6 +14,7 @@ const LOADING_MSG_ID = "loading-msg";
 
 export const ChatTab = () => {
   const locale = useLocale();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // These also contain metadata for debugging like the context used
   const { data: messageHistory, isLoading: isServerMessages } = useQuery({
@@ -79,34 +80,41 @@ export const ChatTab = () => {
       : []),
   ];
 
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "instant" });
+    }
+  }, [messagesWithLoading]);
+
   return (
     <>
       <div
         className="h-[calc(100vh-320px)] min-h-[300px]
-      sm:h-[calc(100vh-400px)] sm:min-h-[300px] flex flex-col gap-6 border p-4 sm:p-6 border-yellow-700/20 rounded-lg"
+  sm:h-[calc(100vh-400px)] sm:min-h-[300px] flex flex-col gap-6 border border-yellow-700/20 p-4 sm:p-6 rounded-lg"
       >
-        <div className="h-full overflow-scroll relative">
-          {!hasMessages && (
-            <div className="text-center opacity-50 text-sm absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              Chat with the wikipedia assistant
+        <div className="h-full overflow-hidden relative">
+          <div className="h-full overflow-y-scroll scrollbar-hide">
+            {!hasMessages && (
+              <div className="text-center opacity-50 text-sm absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                Chat with the Wikipedia assistant
+              </div>
+            )}
+
+            <div className="flex flex-col gap-4">
+              {messagesWithLoading.map((message) => {
+                // @ts-ignore
+                const meta = message.metadata;
+
+                return (
+                  <ChatMessage meta={meta} role={message.role} key={message.id}>
+                    <MarkdownRenderer>{message.content}</MarkdownRenderer>
+                  </ChatMessage>
+                );
+              })}
+              {/* Scroll buffer */}
+              <div ref={messagesEndRef} className="h-[100px]" />{" "}
             </div>
-          )}
-
-          <div className="flex flex-col gap-4">
-            {messagesWithLoading.map((message) => {
-              // @ts-ignore
-              const meta = message.metadata;
-
-              return (
-                <ChatMessage meta={meta} role={message.role} key={message.id}>
-                  <MarkdownRenderer>{message.content}</MarkdownRenderer>
-                </ChatMessage>
-              );
-            })}
           </div>
-
-          {/* Scroll buffer */}
-          <div className="h-[100px]" />
         </div>
 
         <form
@@ -119,7 +127,7 @@ export const ChatTab = () => {
             disabled={isLoading || isServerMessages}
             onChange={handleInputChange}
             placeholder="Ask a question..."
-            className="border placeholder:text-yellow-950/50 border-yellow-700/20 rounded-md px-4 h-10 w-full"
+            className="border placeholder:text-yellow-950/50 border-yellow-700/20 rounded-md px-4 h-10 w-full focus:border-yellow-950 outline-none ring-0"
           />
           <LocaleSelect />
 

@@ -30,7 +30,7 @@ export default function Search({
         onChange={(e) => onChange(e.target.value)}
         placeholder="Ask a question..."
         disabled={isLoading}
-        className="border placeholder:text-yellow-950/50 border-yellow-700/20 rounded-md px-4 h-10 w-full"
+        className="border placeholder:text-yellow-950/50 border-yellow-700/20 rounded-md px-4 h-10 w-full focus:border-yellow-950 outline-none ring-0"
       />
 
       <LocaleSelect />
