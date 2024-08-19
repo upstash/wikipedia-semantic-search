@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-	maximumScale: 1, // Disable auto-zoom on mobile Safari
+  maximumScale: 1, // Disable auto-zoom on mobile Safari
 };
 
 const serif = EB_Garamond({
