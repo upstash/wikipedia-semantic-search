@@ -27,6 +27,7 @@ export const SearchTab = () => {
     data,
     mutate: fetchResults,
     isPending: isLoading,
+    reset,
   } = useMutation({
     mutationFn: async (query: string) => await serverQueryIndex(query),
   });
@@ -54,6 +55,10 @@ export const SearchTab = () => {
     if (searchParam) fetchResults(searchParam);
     setSearch(searchParam);
   }, [searchParam, isInitial]);
+
+  useEffect(() => {
+    if (!searchParam) reset();
+  }, [searchParam]);
 
   const onSubmit = () => {
     setSearchParam(search);
