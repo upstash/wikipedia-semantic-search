@@ -26,6 +26,43 @@ We've created a semantic search engine and [Upstash RAG Chat SDK](https://github
 - [SentenceTransformers](https://www.sbert.net/): For generating embeddings
 - [Meta-Llama-3-8B-Instruct](https://ai.meta.com/blog/llama-3-available/): As the LLM provider through [QStash LLM APIs](https://upstash.com/docs/qstash/features/llm)
 
+## Development
+
+To run the project locally, follow these steps:
+
+1. Go to [Upstash Console](https://console.upstash.com/) to manage your databases:
+   - Create a new Vector database with embedding model support. You can choose the BGE-M3 model for multilingual support.
+   - Create a new Redis database for storing chat sessions.
+   - Copy the credentials for both Redis and Vector. Also copy the QStash credentials for using the upstash hosted LLM models.
+
+Put the credentials in a `.env` file in the root of the project. Your `.env` file should look like this:
+
+```bash
+UPSTASH_VECTOR_REST_URL=
+UPSTASH_VECTOR_REST_TOKEN=
+
+UPSTASH_REDIS_REST_TOKEN=
+UPSTASH_REDIS_REST_URL=
+
+QSTASH_TOKEN=
+```
+
+2. Populate your Vector index.
+
+> This project uses namespaces to store articles in different languages. So you have to upsert the vectors in the correct namespace. For english, upsert your vectors into the `en` namespace.
+
+3. Install the dependencies:
+
+```bash
+pnpm install
+```
+
+4. Run the development server:
+
+```bash
+pnpm dev
+```
+
 ## Contributing
 
 We welcome contributions to improve this project. Please feel free to submit issues or pull requests.

@@ -66,7 +66,7 @@ export const SearchTab = () => {
   };
 
   return (
-    <div>
+    <div className="max-w-[720px]">
       <Search
         value={search}
         onChange={setSearch}
@@ -99,37 +99,39 @@ export const SearchTab = () => {
         />
       </div>
 
-      <Info className="mt-16 sm:mt-24">
-        <p>
-          This project is an experiment to demonstrate the scalability of
-          Upstash Vector with large datasets. We vectorized{" "}
-          <b>23M Wikipedia articles</b> in <b>11 languages</b> and stored{" "}
-          <b>{info ? formatter.format(info.vectorCount) : "..."} vectors</b> in
-          a single Upstash Vector index.
-        </p>
+      {!isLoading && (
+        <Info className="mt-16 sm:mt-24">
+          <p>
+            This project is an experiment to demonstrate the scalability of
+            Upstash Vector with large datasets. We vectorized{" "}
+            <b>23M Wikipedia articles</b> in <b>11 languages</b> and stored{" "}
+            <b>{info ? formatter.format(info.vectorCount) : "..."} vectors</b>{" "}
+            in a single Upstash Vector index.
+          </p>
 
-        <p>
-          <b>
-            👉 Check out the{" "}
-            <a
-              className="underline"
-              target="_blank"
-              href="https://github.com/upstash/wikipedia-semantic-search"
-            >
-              github repo
-            </a>{" "}
-            or the{" "}
-            <a
-              className="underline"
-              target="_blank"
-              href="https://upstash.com/blog/indexing-wikipedia"
-            >
-              blog post
-            </a>{" "}
-            for more.
-          </b>
-        </p>
-      </Info>
+          <p>
+            <b>
+              👉 Check out the{" "}
+              <a
+                className="underline"
+                target="_blank"
+                href="https://github.com/upstash/wikipedia-semantic-search"
+              >
+                github repo
+              </a>{" "}
+              or the{" "}
+              <a
+                className="underline"
+                target="_blank"
+                href="https://upstash.com/blog/indexing-wikipedia"
+              >
+                blog post
+              </a>{" "}
+              for more.
+            </b>
+          </p>
+        </Info>
+      )}
     </div>
   );
 };
