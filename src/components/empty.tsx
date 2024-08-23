@@ -69,10 +69,10 @@ const Skeleton = () => {
       <div className="mb-8  h-10 rounded-md animate-pulse bg-zinc-700/10" />
       {new Array(3).fill(null).map((_, i) => (
         <div className="flex flex-col gap-2 py-4" key={i}>
-          <div className="w-[600px] mt-2 h-5 rounded-md animate-pulse bg-zinc-700/10" />
-          <div className="w-[450px] mt-2 h-5 rounded-md animate-pulse bg-zinc-700/10" />
-          <div className="w-[450px] h-5 rounded-md animate-pulse bg-zinc-700/10" />
-          <div className="w-[120px] mt-2 h-5 rounded-md animate-pulse bg-zinc-700/10" />
+          <div className="max-w-[600px] mt-2 h-5 rounded-md animate-pulse bg-zinc-700/10" />
+          <div className="max-w-[450px] mt-2 h-5 rounded-md animate-pulse bg-zinc-700/10" />
+          <div className="max-w-[450px] h-5 rounded-md animate-pulse bg-zinc-700/10" />
+          <div className="max-w-[120px] mt-2 h-5 rounded-md animate-pulse bg-zinc-700/10" />
         </div>
       ))}
     </div>
