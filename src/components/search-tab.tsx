@@ -66,7 +66,7 @@ export const SearchTab = () => {
   };
 
   return (
-    <div>
+    <div className="max-w-[720px]">
       <Search
         value={search}
         onChange={setSearch}
