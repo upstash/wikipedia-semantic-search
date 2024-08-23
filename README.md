@@ -49,9 +49,7 @@ QSTASH_TOKEN=
 
 2. Populate your Vector index.
 
->This project uses namespaces to store articles in different languages. So you have to upsert the vectors in the correct namespace. For english, upsert your vectors into the `en` namespace.
-
-![upload pdf to vector index with a namespace](docs/upload-pdf.png)
+> This project uses namespaces to store articles in different languages. So you have to upsert the vectors in the correct namespace. For english, upsert your vectors into the `en` namespace.
 
 3. Install the dependencies:
 
