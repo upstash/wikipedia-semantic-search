@@ -30,7 +30,7 @@ We've created a semantic search engine and [Upstash RAG Chat SDK](https://github
 
 To run the project locally, follow these steps:
 
-1. Go to [Upstash Console](https://console.upstash.com/) we will create some resources there.
+1. Go to [Upstash Console](https://console.upstash.com/) to manage your databases:
    - Create a new Vector database with embedding model support. You can choose the BGE-M3 model for multilingual support.
    - Create a new Redis database for storing chat sessions.
    - Copy the credentials for both Redis and Vector. Also copy the QStash credentials for using the upstash hosted LLM models.
