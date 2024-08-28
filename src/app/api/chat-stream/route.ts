@@ -17,44 +17,28 @@ export async function POST(request: NextRequest) {
 
     if (!sessionId) throw new Error("No sessionId found");
 
-    let meta: undefined | MessageMetadata = undefined;
-
     const response = await ragChat.chat(question, {
       streaming: true,
       sessionId: sessionId,
       namespace: namespace,
-      onChatHistoryFetched(messages) {
-        // inject the history to metadata
-        this.metadata = {
-          ...this.metadata,
-          usedHistory: messages.map(({ role, content }) => ({
-            role,
-            content,
-          })),
-        };
-        meta = this.metadata;
-        return messages;
-      },
       onContextFetched(context) {
         // only the top 5 results
-        context = context.slice(0, 5);
-
-        // inject the context to metadata
-        this.metadata = {
-          ...this.metadata,
-          usedContext: context.map((x) => ({
-            url: (x.metadata as { url: string | undefined }).url ?? "NO_URL",
-            data: x.data,
-          })),
-        };
-        meta = this.metadata;
-        return context;
+        return context.slice(0, 5);
       },
       topK: 50,
-      metadata: {
-        usedPrompt: PROMPT,
-      } as MessageMetadata,
     });
+
+    const meta = {
+      usedPrompt: PROMPT,
+      usedHistory: response.history.map(({ role, content }) => ({
+        role,
+        content,
+      })),
+      usedContext: response.context.map(({ metadata, data }) => ({
+        url: (metadata as { url?: string }).url ?? "<NO_URL>",
+        data,
+      })),
+    };
 
     // send meta along the response, this is consumed in the client
     // with the data field of useChat
