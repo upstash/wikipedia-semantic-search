@@ -32,9 +32,9 @@ export default function Page() {
           </TabsList>
 
           <TabsContent value="search" className="">
-            <Container className="py-6 sm:py-8">
+            <div className="py-6 sm:py-8">
               <SearchTab />
-            </Container>
+            </div>
           </TabsContent>
           <TabsContent value="chat">
             <Container className="py-6 sm:py-8">

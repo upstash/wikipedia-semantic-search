@@ -1,14 +1,9 @@
+import { QueryResult } from "@upstash/vector";
+
 export type WikiMetadata = {
   id: string;
   url: string;
   title: string;
-};
-
-export type Wiki = {
-  id: number | string;
-  score: number;
-  metadata?: WikiMetadata | undefined;
-  data?: string;
 };
 
 export enum ResultCode {
@@ -20,7 +15,7 @@ export enum ResultCode {
 
 export interface Result {
   code: ResultCode;
-  data: Wiki[];
+  data: QueryResult<WikiMetadata>[];
   ms?: number;
 }
 

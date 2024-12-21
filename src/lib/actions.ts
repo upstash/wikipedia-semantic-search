@@ -4,10 +4,11 @@ import { z } from "zod";
 import { cookies } from "next/headers";
 import { getUserLocale } from "@/service";
 import { upstash, UpstashMessage } from "@upstash/rag-chat";
-import { Info, ResultCode, WikiMetadata } from "@/lib/types";
-import { index } from "./dbs";
+import { Info, Result, ResultCode, WikiMetadata } from "@/lib/types";
+import { index, indexHybrid } from "./dbs";
 import { MessageMetadata } from "./message-meta";
 import { ragChat } from "./rag-chat";
+import { QueryResult } from "@upstash/vector";
 
 export async function serverGetMessages() {
   const sessionId = cookies().get("sessionId")?.value;
@@ -67,7 +68,13 @@ async function getKeywords(query: string) {
   }
 }
 
-export async function serverQueryIndex(query: string) {
+export async function queryIndex({
+  isHybrid,
+  query,
+}: {
+  query: string;
+  isHybrid: boolean;
+}): Promise<Result> {
   try {
     const keywords = await getKeywords(query);
     console.log("query: ", query, "keywords: ", keywords);
@@ -101,13 +108,14 @@ export async function serverQueryIndex(query: string) {
     };
 
     const t0 = performance.now();
-    const data = await index.query<WikiMetadata>(q, { namespace });
+    const usedIndex = isHybrid ? indexHybrid : index;
+    const result = await usedIndex.query<WikiMetadata>(q, { namespace });
     const t1 = performance.now();
     const ms = t1 - t0;
 
     return {
       code: ResultCode.Success,
-      data,
+      data: removeDuplicates(result),
       ms,
     };
   } catch (error) {
@@ -117,6 +125,17 @@ export async function serverQueryIndex(query: string) {
       data: [],
     };
   }
+}
+
+function removeDuplicates(results: QueryResult<WikiMetadata>[]) {
+  const map = new Map<string, QueryResult<WikiMetadata>>();
+  for (const result of results) {
+    if (!result.metadata?.url || map.has(result.metadata.url)) continue;
+
+    map.set(result.metadata?.url, result);
+  }
+
+  return Array.from(map.values()).sort((a, b) => b.score - a.score);
 }
 
 export async function serverGetInfo(): Promise<Info | undefined> {
