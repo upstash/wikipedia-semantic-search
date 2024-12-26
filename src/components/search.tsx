@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import LocaleSelect from "@/components/locale-select";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 
 export default function Search({
@@ -32,8 +31,6 @@ export default function Search({
         disabled={isLoading}
         className="border placeholder:text-yellow-950/50 border-yellow-700/20 rounded-md px-4 h-10 w-full focus:border-yellow-950 outline-none ring-0"
       />
-
-      <LocaleSelect />
 
       <button
         type="submit"

@@ -1,6 +1,5 @@
 import type { Message } from "ai";
 import { NextRequest } from "next/server";
-import { MessageMetadata } from "@/lib/message-meta";
 import { PROMPT, ragChat } from "@/lib/rag-chat";
 import { aiUseChatAdapter } from "@upstash/rag-chat/nextjs";
 

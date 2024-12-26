@@ -1,8 +1,6 @@
 import "./globals.css";
 import { Metadata, Viewport } from "next";
 import { EB_Garamond, Inter } from "next/font/google";
-import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
@@ -38,22 +36,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const locale = await getLocale();
-  // Providing all messages to the client
-  // side is the easiest way to get started
-  const messages = await getMessages();
-
   return (
-    <html
-      lang={locale}
-      className={`${serif.variable} ${sans.variable} font-sans`}
-    >
+    <html className={`${serif.variable} ${sans.variable} font-sans`}>
       <body className="antialiased text-sm sm:text-base text-yellow-950 min-h-screen bg-white">
-        <Providers>
-          <NextIntlClientProvider messages={messages}>
-            {children}
-          </NextIntlClientProvider>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
