@@ -1,9 +1,7 @@
 import { serverClearMessages, serverGetMessages } from "@/lib/actions";
 import { useQuery } from "@tanstack/react-query";
 import { Message, useChat } from "ai/react";
-import { useLocale } from "next-intl";
 import { useEffect, useRef } from "react";
-import LocaleSelect from "./locale-select";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import ChatMessage from "./message";
 import { cn } from "@/lib/utils";
@@ -13,7 +11,6 @@ import { MarkdownRenderer } from "./markdown-renderer";
 const LOADING_MSG_ID = "loading-msg";
 
 export const ChatTab = () => {
-  const locale = useLocale();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // These also contain metadata for debugging like the context used
@@ -36,7 +33,7 @@ export const ChatTab = () => {
   } = useChat({
     api: "/api/chat-stream",
     body: {
-      namespace: locale,
+      namespace: "en",
     },
   });
 
@@ -129,7 +126,6 @@ export const ChatTab = () => {
             placeholder="Ask a question..."
             className="border placeholder:text-yellow-950/50 border-yellow-700/20 rounded-md px-4 h-10 w-full focus:border-yellow-950 outline-none ring-0"
           />
-          <LocaleSelect />
 
           <button
             type="submit"

@@ -1,6 +1,5 @@
 import { Result } from "@/lib/types";
 import React from "react";
-import { useTranslations } from "next-intl";
 
 export default function EmptyState({
   loading,
@@ -11,8 +10,6 @@ export default function EmptyState({
   state: Result | undefined;
   onSearch: (query: string) => void;
 }) {
-  const t = useTranslations();
-
   const _onSearch = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     onSearch(e.currentTarget.textContent ?? "");
@@ -28,7 +25,7 @@ export default function EmptyState({
 
   return (
     <>
-      <h3 className="opacity-80">{t("exampleTitle")}</h3>
+      <h3 className="opacity-80">Example questions</h3>
 
       <ol className="mt-2 list-decimal grid gap-2 list-inside">
         <li>
@@ -37,7 +34,7 @@ export default function EmptyState({
             className="font-serif font-bold hover:bg-yellow-100 decoration-yellow-300 underline text-2xl"
             onClick={_onSearch}
           >
-            {t("example1")}
+            Longest river in the world
           </a>
         </li>
         <li>
@@ -46,7 +43,7 @@ export default function EmptyState({
             className="font-serif font-bold hover:bg-yellow-100 decoration-yellow-300 underline text-2xl"
             onClick={_onSearch}
           >
-            {t("example2")}
+            Books by Stephen King
           </a>
         </li>
         <li>
@@ -55,7 +52,7 @@ export default function EmptyState({
             className="font-serif font-bold hover:bg-yellow-100 decoration-yellow-300 underline text-2xl"
             onClick={_onSearch}
           >
-            {t("example3")}
+            Who invented the airplane?
           </a>
         </li>
       </ol>

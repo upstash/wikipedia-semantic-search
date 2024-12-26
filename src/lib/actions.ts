@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 import { cookies } from "next/headers";
-import { getUserLocale } from "@/service";
 import { upstash, UpstashMessage } from "@upstash/rag-chat";
 import { Info, ResultCode, WikiMetadata } from "@/lib/types";
 import { index } from "./dbs";
@@ -75,7 +74,6 @@ export async function serverQueryIndex(query: string) {
     if (keywords && keywords.length > 0)
       query = query + " " + keywords.join(" ");
 
-    const namespace = await getUserLocale();
     const parsedCredentials = z
       .object({
         query: z.string().min(2),
@@ -101,7 +99,7 @@ export async function serverQueryIndex(query: string) {
     };
 
     const t0 = performance.now();
-    const data = await index.query<WikiMetadata>(q, { namespace });
+    const data = await index.query<WikiMetadata>(q, { namespace: "en" });
     const t1 = performance.now();
     const ms = t1 - t0;
 
