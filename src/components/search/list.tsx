@@ -1,11 +1,16 @@
 import { Result, WikiMetadata } from "@/lib/types";
+import { useQuerySearchParam } from "@/lib/use-query-search-param";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
 import { QueryResult } from "@upstash/vector";
 import { PropsWithChildren } from "react";
 
 export default function List({ state }: { state: Result | undefined }) {
-  const listItems =
-    !state || state.data.length === 0
+  const [searchParam, setSearchParam] = useQuerySearchParam();
+  const isEmpty = searchParam === "";
+
+  const listItems = isEmpty
+    ? undefined
+    : !state || state.data.length === 0
       ? new Array(3).fill(null).map((_, i) => <ListItem key={i} skeleton />)
       : state?.data.map((vector, i) => (
           <ListItem key={vector.metadata?.id + i.toString()} vector={vector} />

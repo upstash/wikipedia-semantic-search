@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { ChatTab } from "@/components/chat-tab";
 import { Header } from "@/components/header";
 import { SearchTab } from "@/components/search/search-tab";
@@ -33,7 +33,9 @@ export default function Page() {
 
           <TabsContent value="search" className="">
             <div className="py-6 sm:py-8">
-              <SearchTab />
+              <Suspense fallback="Loadings...">
+                <SearchTab />
+              </Suspense>
             </div>
           </TabsContent>
           <TabsContent value="chat">

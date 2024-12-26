@@ -26,7 +26,6 @@ export const SearchTab = () => {
   const { data: info } = useFetchInfo();
 
   const [isAnyLoading, setIsAnyLoading] = useState(false);
-  const isEmpty = searchParam === "";
 
   // Use the search query in the URL
   useEffect(() => {

@@ -3,7 +3,6 @@ import * as Select from "@radix-ui/react-select";
 import { IconSelector } from "@tabler/icons-react";
 import { QueryMode } from "@upstash/vector";
 import { useEffect, useState } from "react";
-import { SearchSkeleton } from "./search-skeleton";
 import ErrorMessages from "./error";
 import List from "./list";
 
@@ -73,7 +72,6 @@ export const SearchResult = ({
           </Select.Content>
         </Select.Root>
       </div>
-      {query.isPending && <SearchSkeleton />}
       {query.isError && <ErrorMessages state={query.data} />}
       <List state={query.data} />
     </div>
