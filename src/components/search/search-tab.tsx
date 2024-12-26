@@ -3,8 +3,9 @@ import Search from "./search";
 import { InfoBox } from "./info-box";
 import { useQuerySearchParam } from "../../lib/use-query-search-param";
 import { QueryMode } from "@upstash/vector";
-import { cn } from "@/lib/utils";
+import { cn, formatter } from "@/lib/utils";
 import { SearchResult } from "./search-result";
+import { useFetchInfo } from "@/lib/use-fetch-info";
 
 const BorderBox = ({
   children,
@@ -22,6 +23,8 @@ export const SearchTab = () => {
   const [searchParam, setSearchParam] = useQuerySearchParam();
   const [isInitial, setIsInitial] = useState(true);
 
+  const { data: info } = useFetchInfo();
+
   const [isAnyLoading, setIsAnyLoading] = useState(false);
   const isEmpty = searchParam === "";
 
@@ -35,7 +38,7 @@ export const SearchTab = () => {
   }, [searchParam, isInitial]);
 
   return (
-    <div className="max-w-5xl mx-auto grid gap-4">
+    <div className="max-w-[1180px] mx-auto grid gap-4">
       <BorderBox>
         <Search
           value={search}
@@ -46,18 +49,19 @@ export const SearchTab = () => {
           isLoading={isAnyLoading}
         />
         <p className="text-zinc-500 text-sm mt-2 -mb-2">
-          This database index stores 144M wikipedia articles.
+          This database index stores{" "}
+          <b>{formatter.format(info?.vectorCount ?? 0)}</b> wikipedia articles.
         </p>
       </BorderBox>
-      <div className="flex gap-4 justify-center max-w-5xl mx-auto w-full">
-        <BorderBox className={"w-full"}>
+      <div className="grid grid-cols-2 gap-4 justify-center max-w-[1180px] mx-auto w-full">
+        <BorderBox>
           <SearchResult
             searchParam={searchParam}
             initialMode={QueryMode.DENSE}
             onLoadingChange={setIsAnyLoading}
           />
         </BorderBox>
-        <BorderBox className={"w-full"}>
+        <BorderBox>
           <SearchResult
             searchParam={searchParam}
             initialMode={QueryMode.HYBRID}

@@ -25,13 +25,13 @@ export const SearchResult = ({
   }, [query.isPending, onLoadingChange]);
 
   return (
-    <div className="w-full">
-      <div className="mb-4">
+    <div className="grid gap-2">
+      <div className="mb-1">
         <Select.Root
           value={queryMode}
           onValueChange={(value) => setQueryMode(value as QueryMode)}
         >
-          <div className="flex items-center justify-between w-full px-4 py-2 border rounded-lg bg-zinc-950 text-white shadow-sm">
+          <div className="flex w-full items-center justify-between px-6 py-2 border rounded-lg bg-zinc-950 text-white shadow-sm">
             {/* Select Trigger */}
             <Select.Trigger
               className="inline-flex items-center"
@@ -43,18 +43,18 @@ export const SearchResult = ({
                   {options.find((option) => option.value === queryMode)?.label}
                 </span>
                 <IconSelector
-                  className="inline-flex items-center"
+                  className="inline-flex items-center ml-2"
                   opacity={0.6}
                 />
               </Select.Value>
             </Select.Trigger>
 
-            {/* Custom Component to the Right */}
             <div className="text-xs font-medium text-gray-400 border border-zinc-400 rounded px-1 mr-1">
-              {/* Example: Information from query */}
               {query.data
                 ? `Latency: ${query.data.ms?.toFixed(2)}`
-                : "Loading..."}
+                : query.isPending
+                  ? "Loading..."
+                  : ""}
             </div>
           </div>
 
@@ -75,7 +75,7 @@ export const SearchResult = ({
       </div>
       {query.isPending && <SearchSkeleton />}
       {query.isError && <ErrorMessages state={query.data} />}
-      {query.data && <List state={query.data} />}
+      <List state={query.data} />
     </div>
   );
 };

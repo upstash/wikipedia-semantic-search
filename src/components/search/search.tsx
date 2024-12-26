@@ -28,7 +28,7 @@ export default function Search({
         onChange={(e) => onChange(e.target.value)}
         placeholder="Ask a question..."
         disabled={isLoading}
-        className="shadow-sm border placeholder:text-zinc-950/50 text-zinc-950 rounded-md px-4 h-10 w-full outline-none ring-0 pr-10 bg-emerald-50 font-medium"
+        className="shadow-sm border placeholder:text-zinc-950/50 text-zinc-950 rounded-md pl-6 pr-14 h-10 w-full outline-none ring-0 bg-emerald-50 font-medium"
       />
       <button
         type="submit"

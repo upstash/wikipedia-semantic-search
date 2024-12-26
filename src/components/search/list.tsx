@@ -1,53 +1,67 @@
-import { Result } from "@/lib/types";
-import prettyMilliseconds from "pretty-ms";
-import { formatter } from "@/lib/utils";
-import { useFetchInfo } from "@/lib/use-fetch-info";
+import { Result, WikiMetadata } from "@/lib/types";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import { QueryResult } from "@upstash/vector";
+import { PropsWithChildren } from "react";
 
 export default function List({ state }: { state: Result | undefined }) {
-  const { data: info } = useFetchInfo();
+  const listItems =
+    !state || state.data.length === 0
+      ? new Array(3).fill(null).map((_, i) => <ListItem key={i} skeleton />)
+      : state?.data.map((vector, i) => (
+          <ListItem key={vector.metadata?.id + i.toString()} vector={vector} />
+        ));
 
-  if (state?.data.length === 0) {
-    return null;
-  }
+  return <>{listItems}</>;
+}
 
+function ListItemBorderBox({ children }: PropsWithChildren) {
   return (
-    <>
-      <div className="bg-emerald-50 text-emerald-900 px-4 py-2 rounded-lg">
-        <p>
-          Search has been completed in{" "}
-          <b>{prettyMilliseconds(state?.ms ?? 0)}</b> over{" "}
-          <b>{formatter.format(info?.vectorCount ?? 0)}</b> wikipedia records.
-        </p>
-      </div>
+    <div className="p-6 bg-white rounded-2xl overflow-auto">{children}</div>
+  );
+}
 
-      <div className="mt-8">
-        {state?.data.map((movie, index) => (
-          <article
-            key={movie.metadata?.id + index.toString()}
-            className="border-t border-yellow-700/10 pt-5 mt-5 grid gap-1"
+function ListItem({
+  vector,
+  skeleton,
+}:
+  | {
+      vector: QueryResult<WikiMetadata>;
+      skeleton?: never;
+    }
+  | {
+      vector?: never;
+      skeleton: true;
+    }) {
+  if (skeleton) {
+    return (
+      <ListItemBorderBox>
+        <div className="max-w-64 sm:h-5 h-4 rounded-md animate-pulse bg-zinc-700/10" />
+        <div className="max-w-[450px] mt-2 sm:h-5 h-4 rounded-md animate-pulse bg-zinc-700/10" />
+        <div className="max-w-[400px] mt-1 sm:h-5 h-4 rounded-md animate-pulse bg-zinc-700/10" />
+        <div className="max-w-[120px] mt-3 sm:h-5 h-4 rounded-md animate-pulse bg-zinc-700/10" />
+      </ListItemBorderBox>
+    );
+  }
+  return (
+    <ListItemBorderBox>
+      <article>
+        <p className="font-semibold text-zinc-950">{vector.metadata?.title}</p>
+        <p className="line-clamp-2 text-zinc-700">{vector.data}</p>
+        <p className="mt-2 text-ellipsis overflow-hidden text-zinc-500 line-clamp-1">
+          Score: {vector.score.toFixed(4)} •{" "}
+          <a
+            href={vector.metadata?.url}
+            target="_blank"
+            className="hover:bg-emerald-100 text-ellipsis overflow-hidden w-1/4"
           >
-            <h3 className="font-serif font-semibold text-xl sm:text-2xl">
-              <a
-                href={movie.metadata?.url}
-                target="_blank"
-                className="decoration-yellow-300 underline hover:bg-yellow-100"
-              >
-                {movie.metadata?.title}
-                <ExternalLinkIcon className="ml-1 inline-flex opacity-60" />
-              </a>
-            </h3>
-
-            <p className="line-clamp-3 opacity-80">{movie.data}</p>
-
-            <p className="flex">
-              <span className="text-xs px-2 py-0.5 uppercase rounded font-mono bg-yellow-700/10">
-                Score:<b>{movie.score}</b>
-              </span>
-            </p>
-          </article>
-        ))}
-      </div>
-    </>
+            {decodeURI(vector.metadata?.url ?? "")}
+          </a>
+          <ExternalLinkIcon
+            className="ml-1 inline-flex opacity-60"
+            href={vector.metadata?.url}
+          />
+        </p>
+      </article>
+    </ListItemBorderBox>
   );
 }
