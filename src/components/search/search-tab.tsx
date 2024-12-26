@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import EmptyState from "./empty";
 import ErrorMessages from "./error";
 import List from "./list";
 import Search from "./search";
-import { InfoBox } from "./InfoBox";
-import { SearchSkeleton } from "./SearchSkeleton";
-import { useQuerySearchParam } from "../lib/use-query-search-param";
-import { useSearch } from "../lib/use-search";
+import { InfoBox } from "./info-box";
+import { SearchSkeleton } from "./search-skeleton";
+import { useQuerySearchParam } from "../../lib/use-query-search-param";
+import { useSearch } from "../../lib/use-search";
 
 export const SearchTab = () => {
   const [search, setSearch] = useState<string>("");
@@ -38,17 +37,6 @@ export const SearchTab = () => {
           }}
           isLoading={isLoading}
         />
-
-        {isEmpty && (
-          <div className="mt-8 grow">
-            <EmptyState
-              onSearch={(query) => {
-                setSearch(query);
-                setSearchParam(query);
-              }}
-            />
-          </div>
-        )}
       </div>
       <div className="mt-8 flex gap-4 justify-center max-w-[1000px] mx-auto">
         <SearchResult query={queryNormal} />

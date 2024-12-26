@@ -1,6 +1,6 @@
 import { useFetchInfo } from "@/lib/use-fetch-info";
 import { formatter } from "@/lib/utils";
-import { Info } from "./info";
+import { Info } from "../info";
 
 export const InfoBox = () => {
   const { data: info } = useFetchInfo();
