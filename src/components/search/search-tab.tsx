@@ -1,20 +1,28 @@
-import { useEffect, useState } from "react";
-import ErrorMessages from "./error";
-import List from "./list";
+import { PropsWithChildren, useEffect, useState } from "react";
 import Search from "./search";
 import { InfoBox } from "./info-box";
-import { SearchSkeleton } from "./search-skeleton";
 import { useQuerySearchParam } from "../../lib/use-query-search-param";
-import { useSearch } from "../../lib/use-search";
+import { QueryMode } from "@upstash/vector";
+import { cn } from "@/lib/utils";
+import { SearchResult } from "./search-result";
+
+const BorderBox = ({
+  children,
+  className = "",
+}: PropsWithChildren & { className?: string }) => {
+  return (
+    <div className={cn("p-8 border border-zinc-300  rounded-3xl", className)}>
+      {children}
+    </div>
+  );
+};
 
 export const SearchTab = () => {
   const [search, setSearch] = useState<string>("");
   const [searchParam, setSearchParam] = useQuerySearchParam();
   const [isInitial, setIsInitial] = useState(true);
 
-  const queryNormal = useSearch({ isHybrid: false, search: searchParam });
-  const queryHybrid = useSearch({ isHybrid: true, search: searchParam });
-  const isLoading = queryNormal.isPending || queryHybrid.isPending;
+  const [isAnyLoading, setIsAnyLoading] = useState(false);
   const isEmpty = searchParam === "";
 
   // Use the search query in the URL
@@ -27,32 +35,37 @@ export const SearchTab = () => {
   }, [searchParam, isInitial]);
 
   return (
-    <div>
-      <div className="max-w-[720px] mx-auto">
+    <div className="max-w-5xl mx-auto grid gap-4">
+      <BorderBox>
         <Search
           value={search}
           onChange={setSearch}
           onSubmit={() => {
             setSearchParam(search);
           }}
-          isLoading={isLoading}
+          isLoading={isAnyLoading}
         />
+        <p className="text-zinc-500 text-sm mt-2 -mb-2">
+          This database index stores 144M wikipedia articles.
+        </p>
+      </BorderBox>
+      <div className="flex gap-4 justify-center max-w-5xl mx-auto w-full">
+        <BorderBox className={"w-full"}>
+          <SearchResult
+            searchParam={searchParam}
+            initialMode={QueryMode.DENSE}
+            onLoadingChange={setIsAnyLoading}
+          />
+        </BorderBox>
+        <BorderBox className={"w-full"}>
+          <SearchResult
+            searchParam={searchParam}
+            initialMode={QueryMode.HYBRID}
+            onLoadingChange={setIsAnyLoading}
+          />
+        </BorderBox>
       </div>
-      <div className="mt-8 flex gap-4 justify-center max-w-[1000px] mx-auto">
-        <SearchResult query={queryNormal} />
-        <SearchResult query={queryHybrid} />
-      </div>
-      <div className="max-w-[720px] mx-auto">{!isLoading && <InfoBox />}</div>
-    </div>
-  );
-};
-
-const SearchResult = ({ query }: { query: ReturnType<typeof useSearch> }) => {
-  return (
-    <div className="w-full">
-      {query.isPending && <SearchSkeleton />}
-      {query.isError && <ErrorMessages state={query.data} />}
-      {query.data && <List state={query.data} />}
+      <div>{!isAnyLoading && <InfoBox />}</div>
     </div>
   );
 };

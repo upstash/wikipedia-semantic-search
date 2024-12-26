@@ -6,7 +6,7 @@ const Container = ({
   ...props
 }: React.ComponentProps<"div"> & {}) => (
   <div
-    className={cn("max-w-screen-md mx-auto px-4 sm:px-6", className)}
+    className={cn("max-w-screen-lg mx-auto px-4 sm:px-6", className)}
     {...props}
   />
 );

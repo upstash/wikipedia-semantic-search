@@ -19,7 +19,7 @@ export default function Page() {
     <>
       <Header />
 
-      <main>
+      <main className="bg-zinc-100">
         <Tabs
           value={tab}
           onValueChange={(value) => setTab(value as "chat" | "search")}

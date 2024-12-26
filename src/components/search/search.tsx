@@ -1,7 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { PaperPlaneIcon } from "@radix-ui/react-icons";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 export default function Search({
   isLoading,
@@ -20,7 +19,7 @@ export default function Search({
         e.preventDefault();
         onSubmit();
       }}
-      className="flex gap-2 items-center"
+      className="relative flex items-center"
     >
       <input
         type="search"
@@ -29,18 +28,14 @@ export default function Search({
         onChange={(e) => onChange(e.target.value)}
         placeholder="Ask a question..."
         disabled={isLoading}
-        className="border placeholder:text-yellow-950/50 border-yellow-700/20 rounded-md px-4 h-10 w-full focus:border-yellow-950 outline-none ring-0"
+        className="shadow-sm border placeholder:text-zinc-950/50 text-zinc-950 rounded-md px-4 h-10 w-full outline-none ring-0 pr-10 bg-emerald-50 font-medium"
       />
-
       <button
         type="submit"
-        className={cn(
-          "px-4 h-10 bg-yellow-950 text-white rounded-lg",
-          isLoading && "opacity-30",
-        )}
+        className="absolute right-6 flex items-center justify-center h-6 w-6 text-zinc-950"
         disabled={isLoading}
       >
-        <PaperPlaneIcon />
+        <MagnifyingGlassIcon width={20} height={20} />
       </button>
     </form>
   );

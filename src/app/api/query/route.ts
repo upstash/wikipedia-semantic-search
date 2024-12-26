@@ -1,14 +1,15 @@
 import { queryIndex } from "@/lib/actions";
+import { type QueryMode } from "@upstash/vector";
 
 export async function POST(req: Request) {
   const body = (await req.json()) as {
     query: string;
-    isHybrid: boolean;
+    queryMode: QueryMode;
   };
 
   const result = await queryIndex({
     query: body.query,
-    isHybrid: body.isHybrid,
+    queryMode: body.queryMode,
   });
 
   return Response.json(result);

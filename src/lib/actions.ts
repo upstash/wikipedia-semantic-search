@@ -4,10 +4,16 @@ import { z } from "zod";
 import { cookies } from "next/headers";
 import { upstash, UpstashMessage } from "@upstash/rag-chat";
 import { Info, Result, ResultCode, WikiMetadata } from "@/lib/types";
-import { index, indexHybrid } from "./dbs";
+import { index } from "./dbs";
 import { MessageMetadata } from "./message-meta";
 import { ragChat } from "./rag-chat";
-import { type Index, QueryResult } from "@upstash/vector";
+import {
+  FusionAlgorithm,
+  type Index,
+  type QueryMode,
+  QueryResult,
+  WeightingStrategy,
+} from "@upstash/vector";
 
 export async function serverGetMessages() {
   const sessionId = cookies().get("sessionId")?.value;
@@ -31,11 +37,11 @@ export async function serverClearMessages() {
 }
 
 export async function queryIndex({
-  isHybrid,
+  queryMode,
   query,
 }: {
   query: string;
-  isHybrid: boolean;
+  queryMode: QueryMode;
 }): Promise<Result> {
   try {
     const namespace = "en";
@@ -61,11 +67,13 @@ export async function queryIndex({
       includeData: true,
       includeVectors: false,
       includeMetadata: true,
+      queryMode,
+      fusionAlgorithm: FusionAlgorithm.DBSF,
+      weightingStrategy: WeightingStrategy.IDF,
     };
 
     const t0 = performance.now();
-    const usedIndex = isHybrid ? indexHybrid : index;
-    const result = await usedIndex.query<WikiMetadata>(q, { namespace });
+    const result = await index.query<WikiMetadata>(q, { namespace });
     const t1 = performance.now();
     const ms = t1 - t0;
 
