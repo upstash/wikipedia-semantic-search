@@ -7,7 +7,7 @@ import { Info, Result, ResultCode, WikiMetadata } from "@/lib/types";
 import { index, indexHybrid } from "./dbs";
 import { MessageMetadata } from "./message-meta";
 import { ragChat } from "./rag-chat";
-import { QueryResult } from "@upstash/vector";
+import { type Index, QueryResult } from "@upstash/vector";
 
 export async function serverGetMessages() {
   const sessionId = cookies().get("sessionId")?.value;
@@ -30,43 +30,6 @@ export async function serverClearMessages() {
   await ragChat.history.deleteMessages({ sessionId });
 }
 
-const capitalizeWord = (word: string) => {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-};
-
-async function getKeywords(query: string) {
-  const resp = await upstash("meta-llama/Meta-Llama-3-8B-Instruct", {
-    analytics: {
-      name: "helicone",
-      token: process.env.HELICONE_TOKEN!,
-    },
-  }).invoke(`
-    Please provide a list of keywords about the question given in JSON format.
-    Don't answer with anything else.
-
-    EXAMPLE INPUT:
-    Ghandi
-
-    EXAMPLE OUTPUT:
-    ["Ghandi", "India", "peace", "leader", "non-violence", "freedom"]
-
-    INPUT:
-    ${query.split(" ").map(capitalizeWord).join(" ")}
-
-    OUTPUT:
-    `);
-
-  console.log(resp);
-
-  try {
-    // @ts-ignore
-    return JSON.parse(resp.content) as string[];
-  } catch (error) {
-    console.error("Error parsing keywords, prompt:", resp.content);
-    return undefined;
-  }
-}
-
 export async function queryIndex({
   isHybrid,
   query,
@@ -75,12 +38,6 @@ export async function queryIndex({
   isHybrid: boolean;
 }): Promise<Result> {
   try {
-    const keywords = await getKeywords(query);
-    console.log("query: ", query, "keywords: ", keywords);
-
-    if (keywords && keywords.length > 0)
-      query = query + " " + keywords.join(" ");
-
     const namespace = "en";
     const parsedCredentials = z
       .object({
@@ -98,7 +55,7 @@ export async function queryIndex({
       };
     }
 
-    const q = {
+    const q: Parameters<Index["query"]>[0] = {
       data: query as string,
       topK: 100,
       includeData: true,
