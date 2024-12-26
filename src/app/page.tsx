@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ChatTab } from "@/components/chat-tab";
 import { Header } from "@/components/header";
-import { SearchTab } from "@/components/search-tab";
+import { SearchTab } from "@/components/search/search-tab";
 import {
   Tabs,
   TabsContent,
