@@ -2,23 +2,29 @@ import { serverQueryIndex } from "@/lib/actions";
 import { ResultCode } from "@/lib/types";
 import { useMutation } from "@tanstack/react-query";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import EmptyState from "./empty";
+import {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import ErrorMessages from "./error";
 import List from "./list";
 import Search from "./search";
-import { Info } from "@/components/info";
-import { useFetchInfo } from "@/lib/use-fetch-info";
-import { formatter } from "@/lib/utils";
 
 const emptyState = {
   data: [],
   code: ResultCode.Empty,
 };
 
-export const SearchTab = () => {
-  const { data: info } = useFetchInfo();
+const BorderBox = ({ children }: PropsWithChildren) => {
+  return (
+    <div className="p-8 border border-zinc-300  rounded-3xl">{children}</div>
+  );
+};
 
+export const SearchTab = () => {
   const [search, setSearch] = useState<string>("");
   const [searchParam, setSearchParam] = useQuerySearchParam();
   const [isInitial, setIsInitial] = useState(true);
@@ -66,28 +72,21 @@ export const SearchTab = () => {
   };
 
   return (
-    <div className="max-w-[720px]">
-      <Search
-        value={search}
-        onChange={setSearch}
-        onSubmit={onSubmit}
-        isLoading={isLoading}
-      />
+    <div className="max-w-5xl">
+      <BorderBox>
+        <Search
+          value={search}
+          onChange={setSearch}
+          onSubmit={onSubmit}
+          isLoading={isLoading}
+        />
+        <p className="text-zinc-500 text-sm mt-2 -mb-2">
+          This database index stores 144M wikipedia articles.
+        </p>
+      </BorderBox>
 
       <div className="mt-8">
         <ErrorMessages state={state} />
-      </div>
-
-      <div className="mt-8 grow">
-        <EmptyState
-          loading={isLoading}
-          state={state}
-          onSearch={(query: string) => {
-            setSearch(query);
-            setSearchParam(query);
-            fetchResults(query);
-          }}
-        />
       </div>
 
       <div className="mt-8">
@@ -98,40 +97,6 @@ export const SearchTab = () => {
           }}
         />
       </div>
-
-      {!isLoading && (
-        <Info className="mt-16 sm:mt-24">
-          <p>
-            This project is an experiment to demonstrate the scalability of
-            Upstash Vector with large datasets. We vectorized{" "}
-            <b>23M Wikipedia articles</b> in <b>11 languages</b> and stored{" "}
-            <b>{info ? formatter.format(info.vectorCount) : "..."} vectors</b>{" "}
-            in a single Upstash Vector index.
-          </p>
-
-          <p>
-            <b>
-              👉 Check out the{" "}
-              <a
-                className="underline"
-                target="_blank"
-                href="https://github.com/upstash/wikipedia-semantic-search"
-              >
-                github repo
-              </a>{" "}
-              or the{" "}
-              <a
-                className="underline"
-                target="_blank"
-                href="https://upstash.com/blog/indexing-wikipedia"
-              >
-                blog post
-              </a>{" "}
-              for more.
-            </b>
-          </p>
-        </Info>
-      )}
     </div>
   );
 };

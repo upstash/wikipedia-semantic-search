@@ -7,7 +7,7 @@ import { Info, ResultCode, WikiMetadata } from "@/lib/types";
 import { index } from "./dbs";
 import { MessageMetadata } from "./message-meta";
 import { ragChat } from "./rag-chat";
-import { type Index } from "@upstash/vector";
+import { QueryResult, type Index } from "@upstash/vector";
 
 export async function serverGetMessages() {
   const sessionId = cookies().get("sessionId")?.value;
@@ -57,13 +57,13 @@ export async function serverQueryIndex(query: string) {
     };
 
     const t0 = performance.now();
-    const data = await index.query<WikiMetadata>(q, { namespace: "en" });
+    const result = await index.query<WikiMetadata>(q, { namespace: "en" });
     const t1 = performance.now();
     const ms = t1 - t0;
 
     return {
       code: ResultCode.Success,
-      data,
+      data: removeDuplicates(result),
       ms,
     };
   } catch (error) {
@@ -73,6 +73,17 @@ export async function serverQueryIndex(query: string) {
       data: [],
     };
   }
+}
+
+function removeDuplicates(results: QueryResult<WikiMetadata>[]) {
+  const map = new Map<string, QueryResult<WikiMetadata>>();
+  for (const result of results) {
+    if (!result.metadata?.url || map.has(result.metadata.url)) continue;
+
+    map.set(result.metadata?.url, result);
+  }
+
+  return Array.from(map.values()).sort((a, b) => b.score - a.score);
 }
 
 export async function serverGetInfo(): Promise<Info | undefined> {
