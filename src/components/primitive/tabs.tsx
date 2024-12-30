@@ -24,7 +24,7 @@ const TabsList = ({
   className?: string;
 }) => (
   <TabsPrimitive.List
-    className={cn("flex gap-2 bg-yellow-100", className)}
+    className={cn("flex p-1 rounded-xl bg-zinc-200", className)}
     {...props}
   />
 );
@@ -37,8 +37,7 @@ const TabsTrigger = ({
 }) => (
   <TabsPrimitive.Trigger
     className={cn(
-      "h-10 grow sm:grow-0 px-4 rounded-t-lg opacity-80 border border-transparent border-b-0",
-      "data-[state=active]:font-bold",
+      "h-8 w-24 grow sm:grow-0 rounded-lg px-4 text-zinc-950 font-medium",
       "data-[state=active]:opacity-100",
       "data-[state=active]:bg-white",
       "data-[state=active]:border-yellow-700/20",

@@ -5,7 +5,7 @@ export const Header = () => {
   const router = useRouter();
 
   return (
-    <header className="bg-yellow-100 py-6 sm:pb-6">
+    <header className="py-6 sm:pb-6">
       <Container>
         <h1
           onClick={() => {

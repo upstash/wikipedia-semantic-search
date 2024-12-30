@@ -1,27 +1,11 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Search from "./search";
 import { InfoBox } from "./info-box";
 import { useQuerySearchParam } from "../../lib/use-query-search-param";
-import { QueryMode } from "@upstash/vector";
-import { cn, formatter } from "@/lib/utils";
+import { formatter } from "@/lib/utils";
 import { SearchResult } from "./search-result";
 import { useFetchInfo } from "@/lib/use-fetch-info";
-
-const BorderBox = ({
-  children,
-  className = "",
-}: PropsWithChildren & { className?: string }) => {
-  return (
-    <div
-      className={cn(
-        "p-8 border border-zinc-200 bg-white  rounded-3xl",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
-};
+import { BorderBox } from "../border-box";
 
 export const SearchTab = () => {
   const [search, setSearch] = useState<string>("");
