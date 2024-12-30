@@ -2,18 +2,52 @@
 
 import { z } from "zod";
 import { cookies } from "next/headers";
-import { upstash, UpstashMessage } from "@upstash/rag-chat";
+import { UpstashMessage } from "@upstash/rag-chat";
 import { Info, Result, ResultCode, WikiMetadata } from "@/lib/types";
-import { index } from "./dbs";
 import { MessageMetadata } from "./message-meta";
 import { ragChat } from "./rag-chat";
 import {
   FusionAlgorithm,
   type Index,
-  type QueryMode,
+  QueryMode,
   QueryResult,
   WeightingStrategy,
 } from "@upstash/vector";
+import { SearchOption } from "@/app/api/query/route";
+import { bgeIndex, mxbaiIndex } from "./dbs";
+
+const configs: Record<
+  SearchOption,
+  {
+    index: Index;
+    queryMode: QueryMode;
+  }
+> = {
+  "BGE-M3 (Dense)": {
+    index: bgeIndex,
+    queryMode: QueryMode.DENSE,
+  },
+  "MXBAI (Dense)": {
+    index: mxbaiIndex,
+    queryMode: QueryMode.DENSE,
+  },
+  "BGE-M3 (Sparse)": {
+    index: bgeIndex,
+    queryMode: QueryMode.SPARSE,
+  },
+  "BM25 (Sparse)": {
+    index: mxbaiIndex,
+    queryMode: QueryMode.SPARSE,
+  },
+  "BGE-M3 / BGE-M3 (Hybrid)": {
+    index: bgeIndex,
+    queryMode: QueryMode.HYBRID,
+  },
+  "MXBAI / BM25 (Hybrid)": {
+    index: mxbaiIndex,
+    queryMode: QueryMode.HYBRID,
+  },
+};
 
 export async function serverGetMessages() {
   const sessionId = cookies().get("sessionId")?.value;
@@ -37,11 +71,11 @@ export async function serverClearMessages() {
 }
 
 export async function queryIndex({
-  queryMode,
   query,
+  searchOption,
 }: {
   query: string;
-  queryMode: QueryMode;
+  searchOption: SearchOption;
 }): Promise<Result> {
   try {
     const namespace = "en";
@@ -60,6 +94,8 @@ export async function queryIndex({
         data: [],
       };
     }
+
+    const { index, queryMode } = configs[searchOption];
 
     const q: Parameters<Index["query"]>[0] = {
       data: query as string,
@@ -104,7 +140,7 @@ function removeDuplicates(results: QueryResult<WikiMetadata>[]) {
 
 export async function serverGetInfo(): Promise<Info | undefined> {
   try {
-    const data = await index.info();
+    const data = await bgeIndex.info();
     return data;
   } catch (error) {
     console.error("Error querying Upstash:", error);

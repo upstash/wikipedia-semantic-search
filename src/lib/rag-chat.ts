@@ -1,5 +1,5 @@
 import { RAGChat, upstash } from "@upstash/rag-chat";
-import { index, redis } from "./dbs";
+import { bgeIndex, redis } from "./dbs";
 
 export const ragChat = new RAGChat({
   model: upstash("meta-llama/Meta-Llama-3-8B-Instruct", {
@@ -8,7 +8,7 @@ export const ragChat = new RAGChat({
       token: process.env.HELICONE_TOKEN!,
     },
   }),
-  vector: index,
+  vector: bgeIndex,
   redis: redis,
   debug: false,
   promptFn: ({ chatHistory, context, question }) => {

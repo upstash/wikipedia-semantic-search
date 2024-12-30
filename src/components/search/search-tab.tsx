@@ -12,7 +12,12 @@ const BorderBox = ({
   className = "",
 }: PropsWithChildren & { className?: string }) => {
   return (
-    <div className={cn("p-8 border border-zinc-300  rounded-3xl", className)}>
+    <div
+      className={cn(
+        "p-8 border border-zinc-200 bg-white  rounded-3xl",
+        className,
+      )}
+    >
       {children}
     </div>
   );
@@ -56,19 +61,19 @@ export const SearchTab = () => {
         <BorderBox>
           <SearchResult
             searchParam={searchParam}
-            initialMode={QueryMode.DENSE}
+            initialOption={"BGE-M3 (Dense)"}
             onLoadingChange={setIsAnyLoading}
           />
         </BorderBox>
         <BorderBox>
           <SearchResult
             searchParam={searchParam}
-            initialMode={QueryMode.HYBRID}
+            initialOption={"BGE-M3 / BGE-M3 (Hybrid)"}
             onLoadingChange={setIsAnyLoading}
           />
         </BorderBox>
       </div>
-      <div>{!isAnyLoading && <InfoBox />}</div>
+      {!isAnyLoading && <InfoBox />}
     </div>
   );
 };

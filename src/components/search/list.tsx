@@ -8,20 +8,24 @@ export default function List({ state }: { state: Result | undefined }) {
   const [searchParam, setSearchParam] = useQuerySearchParam();
   const isEmpty = searchParam === "";
 
-  const listItems = isEmpty
-    ? undefined
-    : !state || state.data.length === 0
-      ? new Array(3).fill(null).map((_, i) => <ListItem key={i} skeleton />)
-      : state?.data.map((vector, i) => (
-          <ListItem key={vector.metadata?.id + i.toString()} vector={vector} />
-        ));
+  const listItems =
+    isEmpty || (state && state.data.length === 0)
+      ? undefined
+      : !state
+        ? new Array(3).fill(null).map((_, i) => <ListItem key={i} skeleton />)
+        : state?.data.map((vector, i) => (
+            <ListItem
+              key={vector.metadata?.id + i.toString()}
+              vector={vector}
+            />
+          ));
 
   return <>{listItems}</>;
 }
 
 function ListItemBorderBox({ children }: PropsWithChildren) {
   return (
-    <div className="p-6 bg-white rounded-2xl overflow-auto">{children}</div>
+    <div className="p-6 bg-zinc-100 rounded-2xl overflow-auto">{children}</div>
   );
 }
 

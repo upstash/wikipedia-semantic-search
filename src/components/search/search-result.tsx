@@ -5,18 +5,19 @@ import { QueryMode } from "@upstash/vector";
 import { useEffect, useState } from "react";
 import ErrorMessages from "./error";
 import List from "./list";
+import { SEARCH_OPTIONS, SearchOption } from "@/app/api/query/route";
 
 export const SearchResult = ({
   searchParam,
-  initialMode,
+  initialOption,
   onLoadingChange,
 }: {
   searchParam: string;
-  initialMode: QueryMode;
+  initialOption: SearchOption;
   onLoadingChange: (isLoading: boolean) => void;
 }) => {
-  const [queryMode, setQueryMode] = useState<QueryMode>(initialMode);
-  const query = useSearch({ queryMode, search: searchParam });
+  const [searchOption, setSearchOption] = useState<SearchOption>(initialOption);
+  const query = useSearch({ searchOption, search: searchParam });
 
   // Update global loading state
   useEffect(() => {
@@ -24,62 +25,60 @@ export const SearchResult = ({
   }, [query.isPending, onLoadingChange]);
 
   return (
-    <div className="grid gap-2">
-      <div className="mb-1">
+    <div className="grid gap-4">
+      <div>
         <Select.Root
-          value={queryMode}
-          onValueChange={(value) => setQueryMode(value as QueryMode)}
+          value={searchOption}
+          onValueChange={(value: SearchOption) => setSearchOption(value)}
         >
           <div className="flex w-full items-center justify-between px-6 py-2 border rounded-lg bg-zinc-950 text-white shadow-sm">
             {/* Select Trigger */}
-            <Select.Trigger
-              className="inline-flex items-center"
-              aria-label="Query Mode"
-            >
+            <Select.Trigger className="w-full" aria-label="Query Mode">
               {/* Label and Custom Icon */}
-              <Select.Value className="flex items-center space-x-2">
-                <span className="font-semibold text-white">
-                  {options.find((option) => option.value === queryMode)?.label}
-                </span>
-                <IconSelector
-                  className="inline-flex items-center ml-2"
-                  opacity={0.6}
-                />
+              <Select.Value>
+                <div className="flex justify-between w-full">
+                  <span className="font-semibold text-white">
+                    {searchOption}
+                  </span>
+                  <IconSelector
+                    className="ml-auto inline-flex items-center"
+                    opacity={0.6}
+                  />
+                </div>
               </Select.Value>
             </Select.Trigger>
-
-            <div className="text-xs font-medium text-gray-400 border border-zinc-400 rounded px-1 mr-1">
-              {query.data
-                ? `Latency: ${query.data.ms?.toFixed(2)}`
-                : query.isPending
-                  ? "Loading..."
-                  : ""}
-            </div>
           </div>
 
-          <Select.Content className="z-10 w-56 bg-zinc-950 text-white border border-zinc-700 rounded-md shadow-lg">
+          <Select.Content
+            className="z-10 bg-zinc-950 text-white border border-zinc-700 rounded-md shadow-lg w-full"
+            position="item-aligned"
+          >
             <Select.Viewport>
-              {options.map((option) => (
+              {SEARCH_OPTIONS.map((option) => (
                 <Select.Item
-                  key={option.value}
-                  value={option.value}
-                  className="px-4 py-2 text-sm text-white hover:bg-indigo-500 hover:text-white cursor-pointer"
+                  key={option}
+                  value={option}
+                  className="px-4 py-2 text-sm text-white hover:bg-emerald-500 hover:text-white cursor-pointer"
                 >
-                  <Select.ItemText>{option.label}</Select.ItemText>
+                  <Select.ItemText>
+                    <span className="font-semibold text-white text-base">
+                      {option}
+                    </span>
+                  </Select.ItemText>
                 </Select.Item>
               ))}
             </Select.Viewport>
           </Select.Content>
         </Select.Root>
       </div>
+
+      {query.data?.ms && (
+        <div className="flex justify-end text-xs text-zinc-400">
+          Latency: {query.data?.ms.toFixed(0)}ms
+        </div>
+      )}
       {query.isError && <ErrorMessages state={query.data} />}
       <List state={query.data} />
     </div>
   );
 };
-
-const options: { value: QueryMode; label: string }[] = [
-  { value: QueryMode.DENSE, label: "Semantic (Dense)" },
-  { value: QueryMode.HYBRID, label: "Hybrid" },
-  { value: QueryMode.SPARSE, label: "Sparse" },
-];
