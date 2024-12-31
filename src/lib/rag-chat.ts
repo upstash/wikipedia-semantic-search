@@ -1,7 +1,7 @@
 import { RAGChat, upstash } from "@upstash/rag-chat";
-import { bgeIndex, redis } from "./dbs";
+import { bgeIndex, mxbaiIndex, redis } from "./dbs";
 
-export const ragChat = new RAGChat({
+export const bgeRagChat = new RAGChat({
   model: upstash("meta-llama/Meta-Llama-3-8B-Instruct", {
     analytics: {
       name: "helicone",
@@ -9,6 +9,23 @@ export const ragChat = new RAGChat({
     },
   }),
   vector: bgeIndex,
+  redis: redis,
+  debug: false,
+  promptFn: ({ chatHistory, context, question }) => {
+    return PROMPT.replace("{chatHistory}", chatHistory ?? "<NO_CHAT_HISTORY>")
+      .replace("{context}", context)
+      .replace("{question}", question);
+  },
+});
+
+export const mxbaiRagChat = new RAGChat({
+  model: upstash("meta-llama/Meta-Llama-3-8B-Instruct", {
+    analytics: {
+      name: "helicone",
+      token: process.env.HELICONE_TOKEN!,
+    },
+  }),
+  vector: mxbaiIndex,
   redis: redis,
   debug: false,
   promptFn: ({ chatHistory, context, question }) => {

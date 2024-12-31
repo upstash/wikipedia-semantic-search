@@ -1,26 +1,25 @@
-import { SearchOption } from "@/app/api/query/route";
-import { Result } from "@/lib/types";
+import { ModelOption, Result } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 export const useSearch = ({
-  searchOption,
+  modelOption,
   search,
 }: {
-  searchOption: SearchOption;
+  modelOption: ModelOption;
   search: string;
 }) => {
   const context = useQuery({
     // This prevents the query from being re-executed after changing tabs
     staleTime: 1000 * 60,
-    queryKey: ["search", search, searchOption],
+    queryKey: ["search", search, modelOption],
     queryFn: async () => {
       if (!search) return undefined;
       const req = await fetch("/api/query", {
         method: "POST",
         body: JSON.stringify({
           query: search,
-          searchOption,
+          modelOption,
         }),
       });
 

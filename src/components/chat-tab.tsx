@@ -1,18 +1,51 @@
 import { serverClearMessages, serverGetMessages } from "@/lib/actions";
 import { useQuery } from "@tanstack/react-query";
 import { Message, useChat } from "ai/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import ChatMessage from "./message";
 import { cn } from "@/lib/utils";
 import { Info } from "@/components/info";
 import { MarkdownRenderer } from "./markdown-renderer";
+import { BorderBox } from "./border-box";
+import { IconArrowUp, IconSelector } from "@tabler/icons-react";
+import * as Select from "@radix-ui/react-select";
+import { QueryMode } from "@upstash/vector";
+import { MODEL_OPTIONS, ModelOption } from "@/lib/types";
 
 const LOADING_MSG_ID = "loading-msg";
+
+const SELECT_COMPONENTS: Record<
+  ModelOption,
+  { kind: Lowercase<QueryMode>; model: string }
+> = {
+  "BGE-M3 (Dense)": { kind: "dense", model: "BGE-M3" },
+  "MXBAI (Dense)": { kind: "dense", model: "MXBAI" },
+  "BGE-M3 (Sparse)": { kind: "sparse", model: "BGE-M3" },
+  "BM25 (Sparse)": { kind: "sparse", model: "BM25" },
+  "BGE-M3 / BGE-M3 (Hybrid)": { kind: "hybrid", model: "BGE-M3" },
+  "MXBAI / BM25 (Hybrid)": { kind: "hybrid", model: "MXBAI / BM25" },
+};
+
+function ModelText({ modelOption }: { modelOption: ModelOption }) {
+  return (
+    <div>
+      <span className="text-zinc-950 font-medium capitalize mr-1 text-base">
+        {SELECT_COMPONENTS[modelOption].kind}
+      </span>
+      <span className="text-zinc-950 opacity-50 font-normal">
+        {SELECT_COMPONENTS[modelOption].model}
+      </span>
+    </div>
+  );
+}
 
 export const ChatTab = () => {
   const locale = "en";
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [modelOption, setModelOption] = useState<ModelOption>(
+    "MXBAI / BM25 (Hybrid)",
+  );
 
   // These also contain metadata for debugging like the context used
   const { data: messageHistory, isLoading: isServerMessages } = useQuery({
@@ -35,6 +68,7 @@ export const ChatTab = () => {
     api: "/api/chat-stream",
     body: {
       namespace: locale,
+      modelOption,
     },
   });
 
@@ -86,9 +120,9 @@ export const ChatTab = () => {
 
   return (
     <>
-      <div
+      <BorderBox
         className="h-[calc(100vh-320px)] min-h-[300px]
-  sm:h-[calc(100vh-400px)] sm:min-h-[300px] flex flex-col gap-6 border border-yellow-700/20 p-4 sm:p-6 rounded-lg"
+  sm:h-[calc(100vh-400px)] sm:min-h-[300px] flex flex-col gap-6 border"
       >
         <div className="h-full overflow-hidden relative">
           <div className="h-full overflow-y-scroll scrollbar-hide">
@@ -119,28 +153,71 @@ export const ChatTab = () => {
           onSubmit={handleSubmit}
           className="relative flex gap-2 items-center"
         >
-          <input
-            type="text"
-            value={input}
-            disabled={isLoading || isServerMessages}
-            onChange={handleInputChange}
-            placeholder="Ask a question..."
-            className="border placeholder:text-yellow-950/50 border-yellow-700/20 rounded-md px-4 h-10 w-full focus:border-yellow-950 outline-none ring-0"
-          />
+          <div className="w-full relative flex items-center border rounded-xl px-4 h-[76px] bg-emerald-50 border-emerald-500">
+            <input
+              type="text"
+              value={input}
+              disabled={isLoading || isServerMessages}
+              onChange={handleInputChange}
+              placeholder="Ask a question..."
+              className="flex-grow outline-none ring-0 h-full bg-transparent"
+            />
+            <Select.Root
+              value={modelOption}
+              onValueChange={(value: ModelOption) => setModelOption(value)}
+            >
+              <div className="flex items-center justify-between pl-4 pr-2 py-2 border rounded-xl mx-3 bg-white border-zinc-200 w-56">
+                {/* Select Trigger */}
+                <Select.Trigger className="w-full" aria-label="Query Mode">
+                  {/* Label and Custom Icon */}
+                  <Select.Value>
+                    <div className="flex justify-between w-full">
+                      <ModelText modelOption={modelOption} />
+                      <IconSelector
+                        className="ml-auto inline-flex items-center"
+                        opacity={0.6}
+                      />
+                    </div>
+                  </Select.Value>
+                </Select.Trigger>
+              </div>
 
-          <button
-            type="submit"
-            className={cn(
-              "px-4 h-10 bg-yellow-950 text-white rounded-lg",
-              isLoading && "opacity-30",
-            )}
-          >
-            <PaperPlaneIcon />
-          </button>
+              <Select.Content
+                className="z-10 text-white bg-white border border-zinc-200 rounded-lg shadow-lg w-full"
+                position="item-aligned"
+              >
+                <Select.Viewport>
+                  {MODEL_OPTIONS.map((option) => (
+                    <Select.Item
+                      key={option}
+                      value={option}
+                      className="px-4 py-2 text-sm text-white hover:bg-emerald-500 hover:text-white cursor-pointer rounded-lg"
+                    >
+                      <Select.ItemText>
+                        <span className="font-semibold text-white text-base">
+                          <ModelText modelOption={option} />
+                        </span>
+                      </Select.ItemText>
+                    </Select.Item>
+                  ))}
+                </Select.Viewport>
+              </Select.Content>
+            </Select.Root>
+            <button
+              type="submit"
+              disabled={!input}
+              className={cn(
+                "w-[44px] h-[44px] flex justify-center items-center rounded-xl text-white bg-emerald-600",
+                !input && " cursor-not-allowed",
+              )}
+            >
+              <IconArrowUp />
+            </button>
+          </div>
 
           {hasMessages && (
             <button
-              className="absolute text-xs bottom-full mb-1 left-0 opacity-50 underline"
+              className="absolute text-xs bottom-full mb-1 left-2 text-zinc-500 underline underline-offset-2"
               onClick={() => {
                 void serverClearMessages();
                 setMessages([]);
@@ -154,7 +231,7 @@ export const ChatTab = () => {
         {error && (
           <div className="text-red-600 mt-2">Error: {error.message}</div>
         )}
-      </div>
+      </BorderBox>
 
       <Info className="mt-4 sm:mt-6">
         <p>Chat support is implemented with RAG-Chat SDK.</p>

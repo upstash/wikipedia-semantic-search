@@ -29,14 +29,16 @@ const Message = ({
     >
       <div
         className={cn(
-          "rounded-lg",
-          role === "user" ? "px-2 sm:px-3 py-1 sm:py-2 bg-yellow-100" : "",
+          "rounded-xl",
+          role === "user"
+            ? "px-2 sm:px-4 py-1 sm:py-4 bg-zinc-100 text-zinc-950 font-medium"
+            : "",
         )}
       >
         <div>{children}</div>
 
         {role === "assistant" && meta && (
-          <div className="flex">
+          <div className="flex mt-1">
             <DebugDrawer metadata={meta} />
           </div>
         )}

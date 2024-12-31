@@ -1,11 +1,10 @@
 import { useSearch } from "@/lib/use-search";
 import * as Select from "@radix-ui/react-select";
 import { IconSelector } from "@tabler/icons-react";
-import { QueryMode } from "@upstash/vector";
 import { useEffect, useState } from "react";
 import ErrorMessages from "./error";
 import List from "./list";
-import { SEARCH_OPTIONS, SearchOption } from "@/app/api/query/route";
+import { MODEL_OPTIONS, ModelOption } from "@/lib/types";
 
 export const SearchResult = ({
   searchParam,
@@ -13,11 +12,11 @@ export const SearchResult = ({
   onLoadingChange,
 }: {
   searchParam: string;
-  initialOption: SearchOption;
+  initialOption: ModelOption;
   onLoadingChange: (isLoading: boolean) => void;
 }) => {
-  const [searchOption, setSearchOption] = useState<SearchOption>(initialOption);
-  const query = useSearch({ searchOption, search: searchParam });
+  const [modelOption, setModelOption] = useState<ModelOption>(initialOption);
+  const query = useSearch({ modelOption, search: searchParam });
 
   // Update global loading state
   useEffect(() => {
@@ -28,8 +27,8 @@ export const SearchResult = ({
     <div className="grid gap-4">
       <div>
         <Select.Root
-          value={searchOption}
-          onValueChange={(value: SearchOption) => setSearchOption(value)}
+          value={modelOption}
+          onValueChange={(value: ModelOption) => setModelOption(value)}
         >
           <div className="flex w-full items-center justify-between px-6 py-2 border rounded-lg bg-zinc-950 text-white shadow-sm">
             {/* Select Trigger */}
@@ -38,7 +37,7 @@ export const SearchResult = ({
               <Select.Value>
                 <div className="flex justify-between w-full">
                   <span className="font-semibold text-white">
-                    {searchOption}
+                    {modelOption}
                   </span>
                   <IconSelector
                     className="ml-auto inline-flex items-center"
@@ -50,18 +49,18 @@ export const SearchResult = ({
           </div>
 
           <Select.Content
-            className="z-10 bg-zinc-950 text-white border border-zinc-700 rounded-md shadow-lg w-full"
+            className="z-10 bg-zinc-950 text-white border border-zinc-700 rounded-lg shadow-lg w-full"
             position="item-aligned"
           >
             <Select.Viewport>
-              {SEARCH_OPTIONS.map((option) => (
+              {MODEL_OPTIONS.map((option) => (
                 <Select.Item
                   key={option}
                   value={option}
-                  className="px-4 py-2 text-sm text-white hover:bg-emerald-500 hover:text-white cursor-pointer"
+                  className="px-4 py-2 text-sm text-white hover:bg-emerald-500 hover:text-white cursor-pointer rounded-lg"
                 >
                   <Select.ItemText>
-                    <span className="font-semibold text-white text-base">
+                    <span className="font-semibold text-white text-base rounded-lg">
                       {option}
                     </span>
                   </Select.ItemText>

@@ -1,4 +1,4 @@
-import { QueryResult } from "@upstash/vector";
+import type { QueryResult } from "@upstash/vector";
 
 export type WikiMetadata = {
   id: string;
@@ -34,3 +34,13 @@ export interface Info {
     [key: string]: NamespaceData;
   };
 }
+
+export const MODEL_OPTIONS = [
+  "BGE-M3 (Dense)",
+  "MXBAI (Dense)",
+  "BGE-M3 (Sparse)",
+  "BM25 (Sparse)",
+  "BGE-M3 / BGE-M3 (Hybrid)",
+  "MXBAI / BM25 (Hybrid)",
+] as const;
+export type ModelOption = (typeof MODEL_OPTIONS)[number];

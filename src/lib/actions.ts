@@ -3,58 +3,30 @@
 import { z } from "zod";
 import { cookies } from "next/headers";
 import { UpstashMessage } from "@upstash/rag-chat";
-import { Info, Result, ResultCode, WikiMetadata } from "@/lib/types";
+import {
+  Info,
+  ModelOption,
+  Result,
+  ResultCode,
+  WikiMetadata,
+} from "@/lib/types";
 import { MessageMetadata } from "./message-meta";
-import { ragChat } from "./rag-chat";
 import {
   FusionAlgorithm,
   type Index,
-  QueryMode,
   QueryResult,
   WeightingStrategy,
 } from "@upstash/vector";
-import { SearchOption } from "@/app/api/query/route";
-import { bgeIndex, mxbaiIndex } from "./dbs";
-
-const configs: Record<
-  SearchOption,
-  {
-    index: Index;
-    queryMode: QueryMode;
-  }
-> = {
-  "BGE-M3 (Dense)": {
-    index: bgeIndex,
-    queryMode: QueryMode.DENSE,
-  },
-  "MXBAI (Dense)": {
-    index: mxbaiIndex,
-    queryMode: QueryMode.DENSE,
-  },
-  "BGE-M3 (Sparse)": {
-    index: bgeIndex,
-    queryMode: QueryMode.SPARSE,
-  },
-  "BM25 (Sparse)": {
-    index: mxbaiIndex,
-    queryMode: QueryMode.SPARSE,
-  },
-  "BGE-M3 / BGE-M3 (Hybrid)": {
-    index: bgeIndex,
-    queryMode: QueryMode.HYBRID,
-  },
-  "MXBAI / BM25 (Hybrid)": {
-    index: mxbaiIndex,
-    queryMode: QueryMode.HYBRID,
-  },
-};
+import { bgeIndex } from "./dbs";
+import { bgeRagChat } from "./rag-chat";
+import { MODEL_CONFIGS } from "./constants";
 
 export async function serverGetMessages() {
   const sessionId = cookies().get("sessionId")?.value;
 
   if (!sessionId) throw new Error("No sessionId found");
 
-  const messages = (await ragChat.history.getMessages({
+  const messages = (await bgeRagChat.history.getMessages({
     sessionId: sessionId,
     amount: 10,
   })) as UpstashMessage<MessageMetadata>[];
@@ -67,15 +39,15 @@ export async function serverClearMessages() {
 
   if (!sessionId) throw new Error("No sessionId found");
 
-  await ragChat.history.deleteMessages({ sessionId });
+  await bgeRagChat.history.deleteMessages({ sessionId });
 }
 
 export async function queryIndex({
   query,
-  searchOption,
+  modelOption,
 }: {
   query: string;
-  searchOption: SearchOption;
+  modelOption: ModelOption;
 }): Promise<Result> {
   try {
     const namespace = "en";
@@ -95,7 +67,7 @@ export async function queryIndex({
       };
     }
 
-    const { index, queryMode } = configs[searchOption];
+    const { index, queryMode } = MODEL_CONFIGS[modelOption];
 
     const q: Parameters<Index["query"]>[0] = {
       data: query as string,

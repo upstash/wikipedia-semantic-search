@@ -2,7 +2,6 @@
 
 import { Suspense, useState } from "react";
 import { ChatTab } from "@/components/chat-tab";
-import { Header } from "@/components/header";
 import { SearchTab } from "@/components/search/search-tab";
 import {
   Tabs,
@@ -23,7 +22,7 @@ export default function Page() {
           value={tab}
           onValueChange={(value) => setTab(value as "chat" | "search")}
         >
-          <BorderBox className="max-w-[1180px] mx-auto w-full bg-zinc-100 flex flex-col items-center justify-center text-sm">
+          <BorderBox className="max-w-[1180px] mx-auto w-full bg-zinc-100 flex flex-col items-center justify-center text-sm mt-10">
             <div className="font-semibold text-2xl text-zinc-950">
               Hybrid and Semantic Search on Wikipedia Articles
             </div>

@@ -27,12 +27,12 @@ export const DebugDrawer = ({
       <DialogTrigger>
         <button
           type="button"
-          className="underline uppercase cursor-pointer font-mono text-xs opacity-50"
+          className="underline cursor-pointer text-zinc-500 underline-offset-2"
           onClick={() => {
             setOpen(true);
           }}
         >
-          debug
+          Debug
         </button>
       </DialogTrigger>
 
