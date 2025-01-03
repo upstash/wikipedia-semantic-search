@@ -38,7 +38,7 @@ export default async function RootLayout({
 }) {
   return (
     <html className={`${serif.variable} ${sans.variable} font-sans`}>
-      <body className="antialiased text-sm sm:text-base text-yellow-950 min-h-screen bg-white">
+      <body className="antialiased text-sm sm:text-base text-zinc-950 min-h-screen bg-white">
         <Providers>{children}</Providers>
       </body>
     </html>
