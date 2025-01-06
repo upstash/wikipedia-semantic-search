@@ -11,7 +11,7 @@ import {
 } from "@/components/primitive/tabs";
 import Container from "@/components/container";
 import { BorderBox } from "@/components/border-box";
-import { IconBrandOpenai } from "@tabler/icons-react";
+import { IconBrandOpenai, IconLoader2 } from "@tabler/icons-react";
 
 export default function Page() {
   const [tab, setTab] = useState<"chat" | "search">("search");
@@ -66,7 +66,14 @@ export default function Page() {
 
           <TabsContent value="search" className="">
             <div className="py-6 sm:py-8">
-              <Suspense fallback="Loadings...">
+              <Suspense
+                fallback={
+                  <IconLoader2
+                    className="animate-spin flex w-full justify-center text-emerald-400"
+                    role="status"
+                  />
+                }
+              >
                 <SearchTab />
               </Suspense>
             </div>

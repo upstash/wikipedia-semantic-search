@@ -21,16 +21,15 @@ export const SearchTab = () => {
     if (!isInitial) return;
     setIsInitial(false);
     if (searchParam.query) {
-      console.log("in");
       setSearch(searchParam.query);
     } else {
-      console.log("out", searchParam);
-
+      const query = "Who are the founders of internet?";
       setSearchParam({
-        query: "Who are the founders of internet?",
+        query,
         leftModel: "MXBAI (Dense)",
         rightModel: "MXBAI / BM25 (Hybrid)",
       });
+      setSearch(query);
     }
   }, [searchParam, isInitial]);
 
