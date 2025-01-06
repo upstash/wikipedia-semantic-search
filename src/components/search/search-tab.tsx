@@ -20,10 +20,17 @@ export const SearchTab = () => {
   useEffect(() => {
     if (!isInitial) return;
     setIsInitial(false);
-    if (searchParam) {
-      setSearch(searchParam);
+    if (searchParam.query) {
+      console.log("in");
+      setSearch(searchParam.query);
     } else {
-      setSearchParam("Who are the founders of internet?");
+      console.log("out", searchParam);
+
+      setSearchParam({
+        query: "Who are the founders of internet?",
+        leftModel: "MXBAI (Dense)",
+        rightModel: "MXBAI / BM25 (Hybrid)",
+      });
     }
   }, [searchParam, isInitial]);
 
@@ -34,7 +41,7 @@ export const SearchTab = () => {
           value={search}
           onChange={setSearch}
           onSubmit={() => {
-            setSearchParam(search);
+            setSearchParam({ query: search });
           }}
           isLoading={isAnyLoading}
         />
@@ -46,16 +53,18 @@ export const SearchTab = () => {
       <div className="grid grid-cols-2 gap-4 justify-center max-w-[1180px] mx-auto w-full">
         <BorderBox>
           <SearchResult
-            searchParam={searchParam}
-            initialOption={"BGE-M3 (Dense)"}
+            searchParam={searchParam.query}
             onLoadingChange={setIsAnyLoading}
+            modelOption={searchParam.leftModel}
+            setModelOption={(model) => setSearchParam({ leftModel: model })}
           />
         </BorderBox>
         <BorderBox>
           <SearchResult
-            searchParam={searchParam}
-            initialOption={"BGE-M3 / BGE-M3 (Hybrid)"}
+            searchParam={searchParam.query}
             onLoadingChange={setIsAnyLoading}
+            modelOption={searchParam.rightModel}
+            setModelOption={(model) => setSearchParam({ rightModel: model })}
           />
         </BorderBox>
       </div>

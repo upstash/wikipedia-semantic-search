@@ -6,7 +6,7 @@ import { PropsWithChildren } from "react";
 
 export default function List({ state }: { state: Result | undefined }) {
   const [searchParam, setSearchParam] = useQuerySearchParam();
-  const isEmpty = searchParam === "";
+  const isEmpty = searchParam.query === "";
 
   const listItems =
     isEmpty || (state && state.data.length === 0)

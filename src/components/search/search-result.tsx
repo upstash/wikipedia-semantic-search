@@ -8,14 +8,15 @@ import { MODEL_OPTIONS, ModelOption } from "@/lib/types";
 
 export const SearchResult = ({
   searchParam,
-  initialOption,
   onLoadingChange,
+  modelOption,
+  setModelOption,
 }: {
   searchParam: string;
-  initialOption: ModelOption;
   onLoadingChange: (isLoading: boolean) => void;
+  modelOption: ModelOption;
+  setModelOption: (model: ModelOption) => void;
 }) => {
-  const [modelOption, setModelOption] = useState<ModelOption>(initialOption);
   const query = useSearch({ modelOption, search: searchParam });
 
   // Update global loading state
