@@ -23,9 +23,12 @@ export default function Page() {
           onValueChange={(value) => setTab(value as "chat" | "search")}
         >
           <BorderBox className="max-w-[1180px] mx-auto w-full bg-zinc-100 flex flex-col items-center justify-center text-sm mt-10">
-            <div className="font-semibold text-2xl text-zinc-950">
+            <a
+              className="font-semibold text-2xl text-zinc-950 text-center"
+              href="/"
+            >
               Hybrid and Semantic Search on Wikipedia Articles
-            </div>
+            </a>
             <div className="text-zinc-500 flex items-center mt-2">
               Powered by&nbsp;
               <img
