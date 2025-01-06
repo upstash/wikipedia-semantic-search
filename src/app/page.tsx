@@ -11,6 +11,7 @@ import {
 } from "@/components/primitive/tabs";
 import Container from "@/components/container";
 import { BorderBox } from "@/components/border-box";
+import { IconBrandOpenai } from "@tabler/icons-react";
 
 export default function Page() {
   const [tab, setTab] = useState<"chat" | "search">("search");
@@ -47,6 +48,7 @@ export default function Page() {
                 Upstash Vector
               </a>
               &nbsp;and&nbsp;
+              <IconBrandOpenai className="mr-[3px]" height={18} width={18} />
               <a
                 href="https://openai.com"
                 target="_blank"
