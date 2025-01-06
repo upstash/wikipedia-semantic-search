@@ -71,7 +71,7 @@ export async function queryIndex({
 
     const q: Parameters<Index["query"]>[0] = {
       data: query as string,
-      topK: 100,
+      topK: 20,
       includeData: true,
       includeVectors: false,
       includeMetadata: true,
