@@ -22,6 +22,8 @@ export const SearchTab = () => {
     setIsInitial(false);
     if (searchParam) {
       setSearch(searchParam);
+    } else {
+      setSearchParam("Who are the founders of internet?");
     }
   }, [searchParam, isInitial]);
 
