@@ -6,13 +6,14 @@ export const InfoBox = () => {
   const { data: info } = useFetchInfo();
 
   return (
-    <Info className="mt-16 sm:mt-24">
+    <Info className="mt-16 sm:mt-24 px-10">
       <p>
         This project is an experiment to demonstrate the scalability of Upstash
         Vector with large datasets. We vectorized <b>23M Wikipedia articles</b>{" "}
-        in <b>11 languages</b> and stored{" "}
-        <b>{info ? formatter.format(info.vectorCount) : "..."} vectors</b> in a
-        single Upstash Vector index.
+        and store{" "}
+        <b>{info ? formatter.format(info.vectorCount) : "..."} vectors</b> in
+        Upstash Vector. You can compare results from dense, hybrid and sparse
+        indexes.
       </p>
 
       <p>
@@ -29,7 +30,7 @@ export const InfoBox = () => {
           <a
             className="underline"
             target="_blank"
-            href="https://upstash.com/blog/indexing-wikipedia"
+            href="https://upstash.com/blog/sparse-and-hybrid-indexes"
           >
             blog post
           </a>{" "}
