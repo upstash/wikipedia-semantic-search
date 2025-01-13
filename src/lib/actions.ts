@@ -42,6 +42,10 @@ export async function serverClearMessages() {
   await bgeRagChat.history.deleteMessages({ sessionId });
 }
 
+const capitalizeWord = (word: string) => {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+};
+
 export async function queryIndex({
   query,
   modelOption,
@@ -50,6 +54,7 @@ export async function queryIndex({
   modelOption: ModelOption;
 }): Promise<Result> {
   try {
+    query = capitalizeWord(query);
     const namespace = "en";
     const parsedCredentials = z
       .object({
