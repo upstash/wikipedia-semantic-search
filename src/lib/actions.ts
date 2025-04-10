@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { cookies } from "next/headers";
 import { getUserLocale } from "@/service";
-import { upstash, UpstashMessage } from "@upstash/rag-chat";
+import { openai, UpstashMessage } from "@upstash/rag-chat";
 import { Info, ResultCode, WikiMetadata } from "@/lib/types";
 import { index } from "./dbs";
 import { MessageMetadata } from "./message-meta";
@@ -35,11 +35,8 @@ const capitalizeWord = (word: string) => {
 };
 
 async function getKeywords(query: string) {
-  const resp = await upstash("meta-llama/Meta-Llama-3-8B-Instruct", {
-    analytics: {
-      name: "helicone",
-      token: process.env.HELICONE_TOKEN!,
-    },
+  const resp = await openai("gpt-4-turbo", {
+    apiKey: process.env.OPENAI_API_KEY!,
   }).invoke(`
     Please provide a list of keywords about the question given in JSON format.
     Don't answer with anything else.

@@ -1,12 +1,9 @@
-import { RAGChat, upstash } from "@upstash/rag-chat";
+import { RAGChat, openai } from "@upstash/rag-chat";
 import { index, redis } from "./dbs";
 
 export const ragChat = new RAGChat({
-  model: upstash("meta-llama/Meta-Llama-3-8B-Instruct", {
-    analytics: {
-      name: "helicone",
-      token: process.env.HELICONE_TOKEN!,
-    },
+  model: openai("gpt-4-turbo", {
+    apiKey: process.env.OPENAI_API_KEY!,
   }),
   vector: index,
   redis: redis,
