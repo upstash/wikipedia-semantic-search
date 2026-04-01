@@ -25,6 +25,7 @@ We've created a semantic search engine and [Upstash RAG Chat SDK](https://github
 - [Upstash RAG Chat SDK](https://github.com/upstash/rag-chat): For building the RAG Chat application
 - [SentenceTransformers](https://www.sbert.net/): For generating embeddings
 - [Meta-Llama-3-8B-Instruct](https://ai.meta.com/blog/llama-3-available/): As the LLM provider through [QStash LLM APIs](https://upstash.com/docs/qstash/features/llm)
+- [MiniMax](https://api.minimax.io): Alternative LLM provider via OpenAI-compatible API
 
 ## Development
 
@@ -45,7 +46,39 @@ UPSTASH_REDIS_REST_TOKEN=
 UPSTASH_REDIS_REST_URL=
 
 QSTASH_TOKEN=
+
+# LLM Provider: "openai" (default) or "minimax"
+LLM_PROVIDER=openai
+
+# OpenAI — required when LLM_PROVIDER=openai
+OPENAI_API_KEY=
+
+# MiniMax — required when LLM_PROVIDER=minimax
+MINIMAX_API_KEY=
+MINIMAX_MODEL=MiniMax-M2.7
 ```
+
+### Using MiniMax as the LLM backend
+
+[MiniMax](https://api.minimax.io) provides an OpenAI-compatible API with models that have a 204K context window, making them well-suited for RAG workloads with large Wikipedia contexts.
+
+To switch to MiniMax, set the following environment variables:
+
+```bash
+LLM_PROVIDER=minimax
+MINIMAX_API_KEY=<your MiniMax API key>
+# Optional — defaults to MiniMax-M2.7
+MINIMAX_MODEL=MiniMax-M2.7
+```
+
+Available MiniMax models (all with 204K context):
+
+| Model | Notes |
+|---|---|
+| `MiniMax-M2.7` | Latest, highest quality (default) |
+| `MiniMax-M2.7-highspeed` | Faster, lower latency |
+| `MiniMax-M2.5` | Previous generation |
+| `MiniMax-M2.5-highspeed` | Previous generation, faster |
 
 2. Populate your Vector index.
 
