@@ -1,10 +1,9 @@
-import { RAGChat, openai } from "@upstash/rag-chat";
+import { RAGChat } from "@upstash/rag-chat";
 import { index, redis } from "./dbs";
+import { createModel } from "./model-factory";
 
 export const ragChat = new RAGChat({
-  model: openai("gpt-4-turbo", {
-    apiKey: process.env.OPENAI_API_KEY!,
-  }),
+  model: createModel(),
   vector: index,
   redis: redis,
   debug: false,
